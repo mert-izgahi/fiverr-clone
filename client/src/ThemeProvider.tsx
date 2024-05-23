@@ -2,7 +2,9 @@ import { createTheme, MantineProvider } from "@mantine/core";
 import { useAppSelector } from "./redux/store";
 import { useEffect } from "react";
 
-const theme = createTheme({});
+const theme = createTheme({
+  primaryColor: "green",
+});
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
   const { colorSchema } = useAppSelector((state) => state.colorSchema);

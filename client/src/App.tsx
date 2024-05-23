@@ -13,9 +13,14 @@ import {
   DashboardGigsEditPage,
   DashboardCategoriesListPage
 } from "./pages/dashboard";
+
+import {RootLayout,RootHomePage} from "./pages/root";
 function App() {
   return <Routes>
-    <Route path="/" element={<DashboardLayout />}>
+    <Route path="/" element={<RootLayout />}>
+      <Route index element={<RootHomePage />} />
+    </Route>
+    <Route path="/dashboard" element={<DashboardLayout />}>
       <Route index element={<DashboardOverviewPage />} />
       <Route path="account" element={<DashboardAccountPage />} />
       <Route path="settings" element={<DashboardSettingsPage />} />
