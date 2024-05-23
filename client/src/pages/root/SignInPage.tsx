@@ -2,7 +2,7 @@ import React from 'react'
 
 function SignInPage() {
   return (
-    <div>SignInPage</div>
+    <div className='container py-5'>SignInPage</div>
   )
 }
 

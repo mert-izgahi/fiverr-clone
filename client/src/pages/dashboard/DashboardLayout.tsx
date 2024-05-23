@@ -15,6 +15,7 @@ function DashboardLayout() {
         breakpoint: "sm",
         collapsed: { desktop: false, mobile: !opened },
       }}
+      p={"md"}
     >
       <AppShell.Header className="bg-body-tertiary">
         <DashboardHeader toggle={toggle} opened={opened} />

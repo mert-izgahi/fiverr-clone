@@ -9,7 +9,7 @@ import store, { persistor } from "./redux/store.ts";
 import { PersistGate } from "redux-persist/integration/react";
 import ThemeProvider from "./ThemeProvider.tsx";
 import { BrowserRouter } from "react-router-dom";
-
+import { Toaster } from "react-hot-toast";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
@@ -17,6 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <PersistGate loading={null} persistor={persistor}>
           <ThemeProvider>
             <App />
+            <Toaster />
           </ThemeProvider>
         </PersistGate>
       </Provider>

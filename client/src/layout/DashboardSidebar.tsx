@@ -48,6 +48,7 @@ function DashboardSidebar() {
               leftSection={link.icon}
               active={link.isActive}
               variant="filled"
+              className="p-3 rounded"
               component={Link}
               to={link.path}
             />
