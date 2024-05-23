@@ -11,35 +11,46 @@ import {
   DashboardGigsListPage,
   DashboardGigsCreatePage,
   DashboardGigsEditPage,
-  DashboardCategoriesListPage
+  DashboardCategoriesListPage,
 } from "./pages/dashboard";
 
-import {RootLayout,RootHomePage} from "./pages/root";
+import {
+  RootLayout,
+  RootHomePage,
+  RootSignInPage,
+  RootSignUpPage,
+  RootForgetPasswordPage,
+} from "./pages/root";
 function App() {
-  return <Routes>
-    <Route path="/" element={<RootLayout />}>
-      <Route index element={<RootHomePage />} />
-    </Route>
-    <Route path="/dashboard" element={<DashboardLayout />}>
-      <Route index element={<DashboardOverviewPage />} />
-      <Route path="account" element={<DashboardAccountPage />} />
-      <Route path="settings" element={<DashboardSettingsPage />} />
-      <Route path="conversations">
-        <Route index element={<DashboardConversationsListPage />} />
-        <Route path=":id" element={<DashboardConversationsDetailsPage />} />
+  return (
+    <Routes>
+      <Route path="/" element={<RootLayout />}>
+        <Route index element={<RootHomePage />} />
+        <Route path="sign-in" element={<RootSignInPage />} />
+        <Route path="sign-up" element={<RootSignUpPage />} />
+        <Route path="forget-password" element={<RootForgetPasswordPage />} />
       </Route>
-      <Route path="orders">
-        <Route index element={<DashboardOrdersListPage />} />
-        <Route path=":id" element={<DashboardOrdersDetailsPage />} />
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route index element={<DashboardOverviewPage />} />
+        <Route path="account" element={<DashboardAccountPage />} />
+        <Route path="settings" element={<DashboardSettingsPage />} />
+        <Route path="conversations">
+          <Route index element={<DashboardConversationsListPage />} />
+          <Route path=":id" element={<DashboardConversationsDetailsPage />} />
+        </Route>
+        <Route path="orders">
+          <Route index element={<DashboardOrdersListPage />} />
+          <Route path=":id" element={<DashboardOrdersDetailsPage />} />
+        </Route>
+        <Route path="gigs">
+          <Route index element={<DashboardGigsListPage />} />
+          <Route path="create" element={<DashboardGigsCreatePage />} />
+          <Route path=":id" element={<DashboardGigsEditPage />} />
+        </Route>
+        <Route path="categories" element={<DashboardCategoriesListPage />} />
       </Route>
-      <Route path="gigs">
-        <Route index element={<DashboardGigsListPage />} />
-        <Route path="create" element={<DashboardGigsCreatePage />} />
-        <Route path=":id" element={<DashboardGigsEditPage />} />
-      </Route>
-      <Route path="categories" element={<DashboardCategoriesListPage />} />
-    </Route>
-  </Routes>;
+    </Routes>
+  );
 }
 
 export default App;
