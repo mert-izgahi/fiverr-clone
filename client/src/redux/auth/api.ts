@@ -1,8 +1,4 @@
-import {
-  BaseQueryFn,
-  createApi,
-  fetchBaseQuery,
-} from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IUser } from "../../types";
 import { signInAction, signOutAction } from "./slice";
 import {
@@ -20,18 +16,7 @@ interface SignInArgs {
   email: string;
   password: string;
 }
-// export const defaultTransformResponse = (response: {
-//   result: any;
-//   status: number;
-// }) => {
-//   return response.result;
-// };
 
-// export const defaultTransformErrorResponse = (baseQueryReturnValue: any) => {
-//   const errorMessage =
-//     (baseQueryReturnValue?.data?.message as string) || "Something went wrong";
-//   return errorMessage;
-// };
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -97,4 +82,5 @@ export const authApi = createApi({
   }),
 });
 
-export const { useSignUpMutation,useSignInMutation,useSignOutMutation } = authApi;
+export const { useSignUpMutation, useSignInMutation, useSignOutMutation } =
+  authApi;

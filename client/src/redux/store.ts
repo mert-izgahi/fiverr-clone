@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { colorSchemaSlice } from "./colorSchema/slice";
 import { authSlice } from "./auth/slice";
 import { authApi } from "./auth/api";
+import { categoriesApi } from "./categories/api";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   colorSchema: colorSchemaSlice.reducer,
   auth: authSlice.reducer,
   [authApi.reducerPath]: authApi.reducer,
+  [categoriesApi.reducerPath]: categoriesApi.reducer,
 });
 
 const persistedReducer = persistReducer(
@@ -28,17 +30,17 @@ const persistedReducer = persistReducer(
     key: "root",
     storage,
     whitelist: ["colorSchema", "auth"],
-    blacklist: [authApi.reducerPath],
+    blacklist: [authApi.reducerPath, categoriesApi.reducerPath],
   },
   rootReducer
 );
 
-export const rootMiddleware: Middleware = (api: MiddlewareAPI) => (next) => (action) => {
-  if (isRejected(action) || isRejectedWithValue(action)) {
-    toast.error(action.payload as string);
-  }
-  return next(action);
-}
+// export const rootMiddleware: Middleware = (api: MiddlewareAPI) => (next) => (action) => {
+//   if (isRejected(action) || isRejectedWithValue(action)) {
+//     toast.error(action.payload as string);
+//   }
+//   return next(action);
+// }
 
 
 
@@ -48,8 +50,9 @@ const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false,
     })
-    .concat(rootMiddleware)
-    .concat(authApi.middleware),
+    // .concat(rootMiddleware)
+    .concat(authApi.middleware)
+    .concat(categoriesApi.middleware),
 });
 
 setupListeners(store.dispatch);

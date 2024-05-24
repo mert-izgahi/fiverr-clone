@@ -12,6 +12,5 @@ const categorySchema = new mongoose.Schema({
   icon: { type: String, required: true },
 });
 
-const Category = mongoose.model<ICategory>("Category", categorySchema);
+export const Category = mongoose.model<ICategory>("Category", categorySchema);
 
-export default Category;

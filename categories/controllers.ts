@@ -1,7 +1,7 @@
-import {  sendResponse } from "../helpers";
+import { sendResponse } from "../helpers";
 import { asyncWrapper } from "../middlewares";
 import { Request, Response } from "express";
-import Category from "./model";
+import { Category } from "./model";
 
 export const createCategory = asyncWrapper(
   async (req: Request, res: Response) => {
@@ -21,7 +21,7 @@ export const getCategories = asyncWrapper(
       queryObj.name = { $regex: search, $options: "i" };
     }
     const categories = await Category.find(queryObj).skip(skip).limit(limit);
-    const total = await Category.countDocuments(queryObj);
+    const total = Math.ceil((await Category.countDocuments(queryObj)) / limit);
     sendResponse(res, { result: { records: categories, total }, status: 200 });
   }
 );

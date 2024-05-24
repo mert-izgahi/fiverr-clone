@@ -1,16 +1,16 @@
 import { UseFormReturnType } from "@mantine/form";
 
 export const themeConstants = {
-  textInputClasses: (form: UseFormReturnType<any>, name: string) => {
+  textInputClasses: (form: UseFormReturnType<any> | null, name: string) => {
     return {
-      input: `form-control ${form.errors[name] && "is-invalid"}`,
+      input: `form-control ${form && form.errors[name] && "is-invalid"}`,
       label: "form-label",
       description: "form-text",
     };
   },
-  passwordInputClasses: (form: UseFormReturnType<any>, name: string) => {
+  passwordInputClasses: (form: UseFormReturnType<any> | null, name: string) => {
     return {
-      input: `form-control ${form.errors[name] && "is-invalid"}`,
+      input: `form-control ${form && form.errors[name] && "is-invalid"}`,
       label: "form-label",
       description: "form-text",
     };
