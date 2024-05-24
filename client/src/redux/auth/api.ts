@@ -17,7 +17,6 @@ interface SignInArgs {
   password: string;
 }
 
-
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
@@ -79,8 +78,33 @@ export const authApi = createApi({
       transformResponse: defaultTransformResponse,
       transformErrorResponse: defaultTransformErrorResponse,
     }),
+
+    updateAccount: builder.mutation({
+      query: (args) => {
+        return {
+          url: `/account`,
+          method: "PUT",
+          body: args,
+        };
+      },
+      transformResponse: defaultTransformResponse,
+      transformErrorResponse: defaultTransformErrorResponse,
+
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(signInAction(data));
+        } catch (err) {
+          throw err;
+        }
+      },
+    }),
   }),
 });
 
-export const { useSignUpMutation, useSignInMutation, useSignOutMutation } =
-  authApi;
+export const {
+  useSignUpMutation,
+  useSignInMutation,
+  useSignOutMutation,
+  useUpdateAccountMutation,
+} = authApi;

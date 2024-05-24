@@ -18,6 +18,7 @@ function UserAccountForm({
   form,
   handleImageChange,
   handleSubmit,
+  isAdmin,
 }: {
   title: string;
   saveLabel: string;
@@ -26,6 +27,7 @@ function UserAccountForm({
   form: UseFormReturnType<any>;
   handleImageChange: (file: File | null) => void;
   handleSubmit: (values: any) => void;
+  isAdmin: boolean;
 }) {
   return (
     <form onSubmit={form.onSubmit(handleSubmit)} noValidate>
@@ -42,7 +44,7 @@ function UserAccountForm({
         </div>
         <div className="card-body">
           <div className="row mb-4">
-            <div className="d-flex align-items-end gap-3">
+            <div className="d-flex align-items-end gap-3 justify-content-center">
               <Avatar
                 src={form?.values.imageUrl}
                 size="xl"
@@ -73,76 +75,89 @@ function UserAccountForm({
                 {error}
               </Alert>
             )}
-            <div className="row row-cols-1 row-cols-md-3 g-4">
-              <div className="col">
-                <TextInput
-                  label="First Name"
-                  {...form.getInputProps("firstName")}
-                  classNames={themeConstants.textInputClasses(
-                    form,
-                    "firstName"
-                  )}
-                />
-              </div>
+            <div className="row">
+              <div className="col-12 col-md-6 mx-auto">
+                <div className="mb-4">
+                  <TextInput
+                    label="First Name"
+                    {...form.getInputProps("firstName")}
+                    classNames={themeConstants.textInputClasses(
+                      form,
+                      "firstName"
+                    )}
+                  />
+                </div>
 
-              <div className="col">
-                <TextInput
-                  label="Last Name"
-                  {...form.getInputProps("lastName")}
-                  classNames={themeConstants.textInputClasses(form, "lastName")}
-                />
-              </div>
+                <div className="mb-4">
+                  <TextInput
+                    label="Last Name"
+                    {...form.getInputProps("lastName")}
+                    classNames={themeConstants.textInputClasses(
+                      form,
+                      "lastName"
+                    )}
+                  />
+                </div>
 
-              <div className="col">
-                <TextInput
-                  label="Email"
-                  {...form.getInputProps("email")}
-                  classNames={themeConstants.textInputClasses(form, "email")}
-                />
-              </div>
+                <div className="mb-4">
+                  <TextInput
+                    label="Email"
+                    {...form.getInputProps("email")}
+                    classNames={themeConstants.textInputClasses(form, "email")}
+                  />
+                </div>
 
-              <div className="col">
-                <Select
-                  label="Role"
-                  {...form.getInputProps("role")}
-                  data={[
-                    {
-                      value: "admin",
-                      label: "Admin",
-                    },
-                    {
-                      value: "user",
-                      label: "User",
-                    },
-                  ]}
-                  classNames={themeConstants.selectInputClasses(form, "role")}
-                />
-              </div>
+                {isAdmin && (
+                  <div className="mb-4">
+                    <Select
+                      label="Role"
+                      {...form.getInputProps("role")}
+                      data={[
+                        {
+                          value: "admin",
+                          label: "Admin",
+                        },
+                        {
+                          value: "user",
+                          label: "User",
+                        },
+                      ]}
+                      classNames={themeConstants.selectInputClasses(
+                        form,
+                        "role"
+                      )}
+                    />
+                  </div>
+                )}
 
-              <div className="col">
-                <Select
-                  label="Gender"
-                  {...form.getInputProps("gender")}
-                  data={[
-                    {
-                      value: "male",
-                      label: "Male",
-                    },
-                    {
-                      value: "female",
-                      label: "Female",
-                    },
-                  ]}
-                  classNames={themeConstants.selectInputClasses(form, "gender")}
-                />
-              </div>
+                <div className="mb-4">
+                  <Select
+                    label="Gender"
+                    {...form.getInputProps("gender")}
+                    data={[
+                      {
+                        value: "male",
+                        label: "Male",
+                      },
+                      {
+                        value: "female",
+                        label: "Female",
+                      },
+                    ]}
+                    classNames={themeConstants.selectInputClasses(
+                      form,
+                      "gender"
+                    )}
+                  />
+                </div>
 
-              <div className="col-12 col-md-12 col-lg-12">
-                <Textarea
-                  label="Bio"
-                  {...form.getInputProps("bio")}
-                  classNames={themeConstants.textInputClasses(form, "bio")}
-                />
+                <div className="mb-4">
+                  <Textarea
+                    label="Bio"
+                    {...form.getInputProps("bio")}
+                    classNames={themeConstants.textInputClasses(form, "bio")}
+                  />
+                </div>
               </div>
             </div>
           </form>

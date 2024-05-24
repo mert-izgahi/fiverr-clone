@@ -104,6 +104,7 @@ function EditPage() {
             form={accountForm}
             handleSubmit={handleAccountFormSubmit}
             handleImageChange={handleImageChange}
+            isAdmin
           />
         </div>
       </div>
