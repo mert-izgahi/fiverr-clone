@@ -9,6 +9,7 @@ import {
 import { OrdersListPage, OrdersDetailsPage } from "./orders";
 import { GigsListPage, GigsCreatePage, GigsEditPage } from "./gigs";
 import { CategoriesListPage } from "./categories";
+import { UsersListPage, UsersEditPage } from "./users";
 export {
   AccountPage as DashboardAccountPage,
   DashboardLayout as DashboardDashboardLayout,
@@ -22,5 +23,7 @@ export {
   GigsCreatePage as DashboardGigsCreatePage,
   GigsEditPage as DashboardGigsEditPage,
   CategoriesListPage as DashboardCategoriesListPage,
-  DashboardLayout
+  UsersListPage as DashboardUsersListPage,
+  UsersEditPage as DashboardUsersEditPage,
+  DashboardLayout,
 };

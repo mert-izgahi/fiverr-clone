@@ -20,6 +20,11 @@ function DashboardSidebar() {
       icon: <i className="bi bi-house me-2"></i>,
     },
     {
+      title: "Account",
+      path: "/dashboard/account",
+      icon: <i className="bi bi-person me-2"></i>,
+    },
+    {
       title: "Gigs",
       path: "/dashboard/gigs",
       icon: <i className="bi bi-book me-2"></i>,

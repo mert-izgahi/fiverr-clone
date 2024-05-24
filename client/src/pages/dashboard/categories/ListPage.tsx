@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Table, TableScrollContainer } from "@mantine/core";
+import {  Table, TableScrollContainer } from "@mantine/core";
 import { useGetCategoriesQuery } from "../../../redux/categories/api";
 import { useMemo } from "react";
 import TableSearchField from "../../../components/TableSearchField";

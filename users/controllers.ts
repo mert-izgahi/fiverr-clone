@@ -91,3 +91,45 @@ export const getAccount = asyncWrapper(async (req: Request, res: Response) => {
   const account = await User.findById(currentUserId);
   sendResponse(res, { result: account, status: 200 });
 });
+
+export const getAllUsers = asyncWrapper(async (req: Request, res: Response) => {
+  const search = req.query.search as string;
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+  const skip = (page - 1) * limit;
+  const queryObj = {} as any;
+  if (search) {
+    queryObj["$or"] = [
+      { firstName: { $regex: search, $options: "i" } },
+      { lastName: { $regex: search, $options: "i" } },
+      { email: { $regex: search, $options: "i" } },
+    ];
+  }
+  const users = await User.find(queryObj).skip(skip).limit(limit);
+  const total = Math.ceil((await User.countDocuments(queryObj)) / limit);
+
+  sendResponse(res, {
+    result: {
+      records: users,
+      total,
+    },
+    status: 200,
+  });
+});
+
+export const getOneUser = asyncWrapper(async (req: Request, res: Response) => {
+  const user = await User.findById(req.params.id);
+  sendResponse(res, { result: user, status: 200 });
+});
+
+export const updateUser = asyncWrapper(async (req: Request, res: Response) => {
+  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
+  sendResponse(res, { result: user, status: 200 });
+});
+
+export const deleteUser = asyncWrapper(async (req: Request, res: Response) => {
+  const user = await User.findByIdAndDelete(req.params.id);
+  sendResponse(res, { result: user, status: 200 });
+});

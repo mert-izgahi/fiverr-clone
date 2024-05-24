@@ -12,6 +12,8 @@ import {
   DashboardGigsCreatePage,
   DashboardGigsEditPage,
   DashboardCategoriesListPage,
+  DashboardUsersListPage,
+  DashboardUsersEditPage
 } from "./pages/dashboard";
 
 import {
@@ -48,6 +50,10 @@ function App() {
           <Route path=":id" element={<DashboardGigsEditPage />} />
         </Route>
         <Route path="categories" element={<DashboardCategoriesListPage />} />
+        <Route path="users">
+          <Route index element={<DashboardUsersListPage />} />
+          <Route path=":id" element={<DashboardUsersEditPage />} />
+        </Route>
       </Route>
     </Routes>
   );

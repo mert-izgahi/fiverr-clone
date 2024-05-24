@@ -80,7 +80,7 @@ function CategoryDrawerForm({
       {mode === "create" && <Button onClick={open}>New Category</Button>}
       {mode === "update" && (
         <ActionIcon className="btn btn-ghost" onClick={open}>
-          <i className="bi bi-pencil-square"></i>
+          <i className="bi bi-pencil"></i>
         </ActionIcon>
       )}
       <Drawer

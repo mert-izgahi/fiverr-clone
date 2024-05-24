@@ -8,6 +8,14 @@ export const themeConstants = {
       description: "form-text",
     };
   },
+  selectInputClasses:(form: UseFormReturnType<any> | null, name: string) => {
+    return {
+      input: `form-select ${form && form.errors[name] && "is-invalid"}`,
+      label: "form-label",
+      description: "form-text",
+      section:"d-none"
+    };
+  },
   passwordInputClasses: (form: UseFormReturnType<any> | null, name: string) => {
     return {
       input: `form-control ${form && form.errors[name] && "is-invalid"}`,

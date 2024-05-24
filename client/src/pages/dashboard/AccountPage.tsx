@@ -2,7 +2,7 @@ import React from 'react'
 
 function AccountPage() {
   return (
-    <div>AccountPage</div>
+    <div className='container-fluid'>AccountPage</div>
   )
 }
 
