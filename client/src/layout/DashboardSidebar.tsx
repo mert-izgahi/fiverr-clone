@@ -1,21 +1,24 @@
 import { NavLink, Stack } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
+import { useAppSelector } from "../redux/store";
+import { useEffect, useMemo } from "react";
 
 function DashboardSidebar() {
   const location = useLocation();
+  const {
+    currentUser: { role },
+  } = useAppSelector((state) => state.auth);
 
-  const links = [
+  const isAdmin = useMemo(() => {
+    return role === "admin";
+  }, [role]);
+
+  const userLinks = [
     {
       title: "Overview",
       path: "/dashboard",
       isActive: location.pathname === "/dashboard",
       icon: <i className="bi bi-house me-2"></i>,
-    },
-    {
-      title: "Categories",
-      path: "/dashboard/categories",
-      isActive: location.pathname === "/dashboard/categories",
-      icon: <i className="bi bi-grid me-2"></i>,
     },
     {
       title: "Gigs",
@@ -36,6 +39,36 @@ function DashboardSidebar() {
       icon: <i className="bi bi-chat me-2"></i>,
     },
   ];
+
+  const adminLinks = [
+    ...userLinks,
+    {
+      title: "Categories",
+      path: "/dashboard/categories",
+      isActive: location.pathname === "/dashboard/categories",
+      icon: <i className="bi bi-grid me-2"></i>,
+    },
+    {
+      title: "Users",
+      path: "/dashboard/users",
+      isActive: location.pathname === "/dashboard/users",
+      icon: <i className="bi bi-people me-2"></i>,
+    },
+    {
+      title: "Settings",
+      path: "/dashboard/settings",
+      isActive: location.pathname === "/dashboard/settings",
+      icon: <i className="bi bi-gear me-2"></i>,
+    },
+  ];
+
+  const links = useMemo(() => {
+    if (isAdmin) {
+      return adminLinks;
+    } else {
+      return userLinks;
+    }
+  }, [isAdmin]);
 
   return (
     <div className="w-100 bg-body h-100">

@@ -2,12 +2,15 @@ import { Burger } from "@mantine/core";
 import React from "react";
 import { Link } from "react-router-dom";
 import ThemeToggler from "../components/ThemeToggler";
+import { useAppSelector } from "../redux/store";
+import UserMenu from "../components/UserMenu";
 
 interface Props {
   toggle: () => void;
   opened: boolean;
 }
 function DashboardHeader({ toggle, opened }: Props) {
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   return (
     <div className="navbar bg-body h-100">
       <div className="container-fluid">
@@ -16,8 +19,11 @@ function DashboardHeader({ toggle, opened }: Props) {
         </Link>
 
         <nav className="navbar-nav ms-auto mb-2 mb-lg-0">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" />
-          <ThemeToggler />
+          <div className="d-flex gap-2 align-items-center">
+            {isAuthenticated && <UserMenu />}
+            <ThemeToggler />
+            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" />
+          </div>
         </nav>
       </div>
     </div>

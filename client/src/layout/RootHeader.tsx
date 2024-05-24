@@ -5,7 +5,11 @@ import { useAppSelector } from "../redux/store";
 import UserMenu from "../components/UserMenu";
 
 function RootHeader() {
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const {
+    isAuthenticated,
+    currentUser: { role },
+  } = useAppSelector((state) => state.auth);
+
   return (
     <div className="vstack gap-2 bg-body-tertiary py-2">
       <div className="navbar navbar-expand-lg bg-body-tertiary">
@@ -61,9 +65,23 @@ function RootHeader() {
                 </>
               )}
 
-              {
-                isAuthenticated && <UserMenu/>
-              }
+              {isAuthenticated && role === "admin" && (
+                <li className="nav-item">
+                  <NavLink to={"/dashboard"} className="nav-link">
+                    Dashboard
+                  </NavLink>
+                </li>
+              )}
+
+              {isAuthenticated && role === "user" && (
+                <li className="nav-item">
+                  <NavLink to={"/dashboard"} className="nav-link">
+                    Switch to seller
+                  </NavLink>
+                </li>
+              )}
+
+              {isAuthenticated && <UserMenu />}
               <li className="nav-item d-none d-lg-block">
                 <ThemeToggler />
               </li>
