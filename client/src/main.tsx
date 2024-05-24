@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
+import '@mantine/dropzone/styles.css';
 import "@mantine/core/styles.css";
 import "./scss/index.scss";
 import "bootstrap";

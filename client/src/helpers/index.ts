@@ -13,6 +13,7 @@ export const themeConstants = {
       input: `form-select ${form && form.errors[name] && "is-invalid"}`,
       label: "form-label",
       description: "form-text",
+      dropdown:"bg-body",
       section:"d-none"
     };
   },
