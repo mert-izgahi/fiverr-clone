@@ -21,8 +21,25 @@ export interface ICategory {
   updatedAt?: Date;
 }
 
-export interface IQueryArgs {
-  search?: string;
-  page?: number;
-  limit?: number;
+export interface IGig {
+  _id: string;
+  title: string;
+  description: string;
+  deliveryDays: number;
+  price: number;
+  category: string;
+  tags: string[];
+  features: string[];
+  images: string[];
+  faqs: {
+    question: string;
+    answer: string;
+  }[];
+  coverUrl: string;
+  seller: Partial<IUser>;
+  views?: number;
+  rating?: number;
+  totalReviews?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

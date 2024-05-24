@@ -7,6 +7,10 @@ import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
 import Step5 from "./Step5";
+import { useCreateGigMutation } from "../../redux/gigs/api";
+import { useUploadImageMutation } from "../../redux/utils/api";
+import GigPreview from "./GigPreview";
+import toast from "react-hot-toast";
 
 const steps = [
   {
@@ -70,9 +74,21 @@ const steps = [
 ];
 
 function GigForm({ mode }: { mode: "create" | "edit" }) {
+  const [createGig, { isLoading: createGigPending, error: createGigError }] =
+    useCreateGigMutation();
+
+  const [
+    uploadImage,
+    { isLoading: uploadImagePending, error: uploadImageError },
+  ] = useUploadImageMutation();
+
   const [active, setActive] = useState(0);
+
   const form = useForm({
-    validate: yupResolver(steps[active].validationSchema),
+    validate:
+      active < steps.length - 1
+        ? yupResolver(steps[active].validationSchema)
+        : undefined,
     initialValues: {
       title: "",
       description: "",
@@ -90,11 +106,35 @@ function GigForm({ mode }: { mode: "create" | "edit" }) {
   });
 
   const handleSubmit = async (values: any) => {
-    if (active < steps.length) {
+    if (active < steps.length - 1) {
       setActive((current) => current + 1);
+    } else {
+      // upload images
+
+      if (values.imagesFiles) {
+        const images = await Promise.all(
+          values.imagesFiles.map((imageFile: File) =>
+            uploadImage({ imageFile })
+          )
+        );
+        delete values.imagesFiles;
+        values.images = images.map((image) => image.data?.url);
+        values.coverUrl = values.images[0];
+      }
+
+      if (mode === "create") {
+        await createGig(values)
+          .unwrap()
+          .then(() => {
+            toast.success("Gig created successfully");
+          })
+          .catch((err) => {
+            toast.error(err);
+          });
+      }
     }
-    console.log(values);
   };
+
   const prevStep = () => {
     if (active > 0) {
       setActive((current) => current - 1);
@@ -105,11 +145,16 @@ function GigForm({ mode }: { mode: "create" | "edit" }) {
       <div className="card">
         <div className="card-header py-3">
           <div className="d-flex justify-content-between align-items-center">
-            <Stepper allowNextStepsSelect={false} active={active} onStepClick={setActive} classNames={{
-                root:"w-100",
-                stepIcon:"rounded-1",
-                stepLabel:"ma"
-            }}>
+            <Stepper
+              allowNextStepsSelect={false}
+              active={active}
+              onStepClick={setActive}
+              classNames={{
+                root: "w-100",
+                stepIcon: "rounded-1",
+                stepLabel: "ma",
+              }}
+            >
               {steps.map((step, index) => (
                 <Stepper.Step
                   key={index}
@@ -130,11 +175,7 @@ function GigForm({ mode }: { mode: "create" | "edit" }) {
           {active === 3 && <Step4 form={form} />}
 
           {active === 4 && <Step5 form={form} />}
-          {active === 5 && (
-            <>
-              <pre>{JSON.stringify(form.values, null, 2)}</pre>
-            </>
-          )}
+          {active === 5 && <GigPreview form={form} />}
         </div>
         <div className="card-footer">
           <div className="d-flex justify-content-end gap-3">
@@ -142,10 +183,11 @@ function GigForm({ mode }: { mode: "create" | "edit" }) {
               Back
             </Button>
             <Button
-              disabled={!form.isValid}
               type="submit"
+              disabled={createGigPending || uploadImagePending}
+              loading={createGigPending || uploadImagePending}
             >
-              {active === steps.length - 1 ? "Publish Gig" : "Next"}
+              {active === 5 ? "Publish Gig" : "Next"}
             </Button>
           </div>
         </div>
