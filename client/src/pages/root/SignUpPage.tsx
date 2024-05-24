@@ -3,6 +3,7 @@ import { useForm, yupResolver } from "@mantine/form";
 import { Alert, Button, PasswordInput, TextInput } from "@mantine/core";
 import { themeConstants } from "../../helpers";
 import { useSignUpMutation } from "../../redux/auth/api";
+import toast from "react-hot-toast";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -36,7 +37,10 @@ function SignUpPage() {
   });
 
   const handleSubmit = async (values: any) => {
-    await signUp(values);
+    await signUp(values).unwrap().then(() => {
+      toast.success("Account created successfully");
+      window.location.href = "/";
+    });
   };
   return (
     <div className="container py-5">

@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import UserAccountForm from "../../components/UserAccountForm";
 import * as Yup from "yup";
 import { useUploadImageMutation } from "../../redux/utils/api";
 import { useAppSelector } from "../../redux/store";
 import { useForm, yupResolver } from "@mantine/form";
 import { useUpdateAccountMutation } from "../../redux/auth/api";
+import { useGetGigsBySellerIdQuery } from "../../redux/gigs/api";
+import { useSearchParams } from "react-router-dom";
+import GigsTable from "../../components/GigsTable";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -15,6 +18,8 @@ const validationSchema = Yup.object().shape({
   imageUrl: Yup.string().optional(),
 });
 function AccountPage() {
+  const [searchParams] = useSearchParams();
+  const { currentUser } = useAppSelector((state) => state.auth);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [
     uploadImage,
@@ -24,7 +29,23 @@ function AccountPage() {
     updateAccount,
     { isLoading: updateUserPending, error: updateUserError },
   ] = useUpdateAccountMutation();
-  const { currentUser } = useAppSelector((state) => state.auth);
+
+  const { data: sellerGigsData, isLoading } = useGetGigsBySellerIdQuery({
+    searchParams: searchParams.toString(),
+    sellerId: currentUser._id,
+  } as any);
+
+  const gigs = useMemo(() => {
+    if (sellerGigsData) {
+      return sellerGigsData.records;
+    }
+  }, [sellerGigsData]);
+
+  const totalPages = useMemo(() => {
+    if (sellerGigsData) {
+      return sellerGigsData.total;
+    }
+  }, [sellerGigsData]);
   const accountForm = useForm({
     initialValues: {
       firstName: currentUser?.firstName || "",
@@ -72,7 +93,17 @@ function AccountPage() {
 
   return (
     <div className="container-fluid">
-      <div className="row">
+      <div className="row mb-5">
+        <div className="col-12">
+          <GigsTable
+            gigs={gigs!}
+            totalPages={totalPages!}
+            isLoading={isLoading}
+          />
+        </div>
+      </div>
+
+      <div className="row mb-5">
         <div className="col-12">
           <UserAccountForm
             title="Account Settings"

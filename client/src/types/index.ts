@@ -22,7 +22,7 @@ export interface ICategory {
 }
 
 export interface IGig {
-  _id: string;
+  _id?: string;
   title: string;
   description: string;
   deliveryDays: number;
