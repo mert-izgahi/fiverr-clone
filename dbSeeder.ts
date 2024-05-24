@@ -295,7 +295,7 @@ const seed = async () => {
 
     const savedUsers = await User.insertMany(users);
     console.log("👉 Users seeded successfully");
-    
+
     const randCategories = [];
     for (let i = 0; i < categories.length; i++) {
       // categories.push(randomCategory());
@@ -308,17 +308,24 @@ const seed = async () => {
 
     const savedCategories = await Category.insertMany(randCategories);
     console.log("👉 Categories seeded successfully");
-    
+
     const randGigs = [];
 
     for (let i = 0; i < 30; i++) {
       const randUser =
         savedUsers[Math.floor(Math.random() * savedUsers.length)];
-      randGigs.push({ ...randomGig(), seller: randUser._id });
+
+      const randCategory =
+        savedCategories[Math.floor(Math.random() * savedCategories.length)];
+      randGigs.push({
+        ...randomGig(),
+        seller: randUser._id,
+        category: randCategory._id,
+      });
     }
     const savedGigs = await Gig.insertMany(randGigs);
     console.log("👉 Gigs seeded successfully");
-    
+
     console.log("👉 Seeded successfully");
     process.exit(0);
   } catch (error) {

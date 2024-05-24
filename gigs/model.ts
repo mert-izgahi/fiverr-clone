@@ -5,7 +5,7 @@ interface IGig extends mongoose.Document {
   description: string;
   deliveryDays: number;
   price: number;
-  category: string;
+  category: mongoose.Types.ObjectId;
   tags: string[];
   features: string[];
   images: string[];
@@ -41,7 +41,8 @@ const gigSchema = new mongoose.Schema<IGig>(
       required: true,
     },
     category: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
       required: true,
     },
     tags: {

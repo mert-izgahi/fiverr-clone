@@ -1,14 +1,38 @@
-import { ActionIcon, Button } from "@mantine/core";
-import { Link, NavLink } from "react-router-dom";
+import { ActionIcon, Button, NavLink as MantineNavLink } from "@mantine/core";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import ThemeToggler from "../components/ThemeToggler";
 import { useAppSelector } from "../redux/store";
 import UserMenu from "../components/UserMenu";
+import { useGetCategoriesStateQuery } from "../redux/categories/api";
+import LoadingState from "../components/LoadingState";
+import { useMemo } from "react";
 
 function RootHeader() {
   const {
     isAuthenticated,
     currentUser: { role },
   } = useAppSelector((state) => state.auth);
+  const {
+    data,
+    isLoading: isLoadingCategories,
+    error: errorCategories,
+  } = useGetCategoriesStateQuery();
+  const location = useLocation();
+  const topCategories = useMemo(() => {
+    if (data) {
+      return data.slice(0, 7);
+    }
+  }, [data]);
+
+  if (isLoadingCategories) {
+    return <LoadingState />;
+  }
+
+  if (errorCategories) {
+    return <div>Error</div>;
+  }
+
+  console.log(location.search);
 
   return (
     <div className="vstack gap-2 bg-body-tertiary py-2">
@@ -40,6 +64,7 @@ function RootHeader() {
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0 gap-3 align-items-center">
+              {}
               <li className="nav-item">
                 <NavLink to={"/"} className="nav-link">
                   Home
@@ -94,33 +119,18 @@ function RootHeader() {
         <div className="row">
           <div className="col-12">
             <ul className="nav  gap-3">
-              <li className="nav-item ">
-                <Link className="nav-link text-muted" to={"/explore"}>
-                  <i className="bi bi-grid me-2"></i>
-                  All
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link text-muted bg-primary rounded"
-                  to={"/explore"}
-                >
-                  <i className="bi bi-palette me-2"></i>
-                  Web design
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link text-muted" to={"/explore"}>
-                  <i className="bi bi-code me-2"></i>
-                  Web development
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link text-muted" to={"/explore"}>
-                  <i className="bi bi-card-text me-2"></i>
-                  Graphic design
-                </Link>
-              </li>
+              {topCategories?.map((category) => (
+                <li className="nav-item" key={category._id}>
+                  <MantineNavLink
+                    component={Link}
+                    to={`/explore?category=${category._id}`}
+                    label={`${category.name}`}
+                    active={location.search === `?category=${category._id}`}
+                    className="rounded-1"
+                    leftSection={<i className={category.icon}></i>}
+                  />
+                </li>
+              ))}
             </ul>
           </div>
         </div>

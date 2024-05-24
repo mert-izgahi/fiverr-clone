@@ -12,5 +12,23 @@ const categorySchema = new mongoose.Schema({
   icon: { type: String, required: true },
 });
 
+// categorySchema.virtual("gigsCount", {
+//   ref: "Gig",
+//   localField: "_id",
+//   foreignField: "category",
+//   count: true,
+//   sort: { gigsCount: -1 },
+// })
+
+
+
+categorySchema.set("toJSON", {
+  virtuals: true,
+});
+
+categorySchema.set("toObject", {
+  virtuals: true,
+});
+
 export const Category = mongoose.model<ICategory>("Category", categorySchema);
 

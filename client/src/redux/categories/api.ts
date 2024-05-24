@@ -14,8 +14,27 @@ export const categoriesApi = createApi({
   endpoints: (build) => ({
     getCategories: build.query<{ records: ICategory[]; total: number }, void>({
       query: (args: any) => {
+        if (args.all) {
+          return {
+            url: "/categories?all=true",
+            method: "GET",
+          };
+        } else {
+          return {
+            url: `/categories?${args.searchParams}`,
+            method: "GET",
+          };
+        }
+      },
+      providesTags: ["Categories"],
+      transformResponse: defaultTransformResponse,
+      transformErrorResponse: defaultTransformErrorResponse,
+    }),
+
+    getCategoriesState : build.query<ICategory[], void>({
+      query: () => {
         return {
-          url: `/categories?${args.searchParams}`,
+          url: "/categories/state",
           method: "GET",
         };
       },
@@ -66,6 +85,7 @@ export const categoriesApi = createApi({
 
 export const {
   useGetCategoriesQuery,
+  useGetCategoriesStateQuery,
   useCreateCategoryMutation,
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,

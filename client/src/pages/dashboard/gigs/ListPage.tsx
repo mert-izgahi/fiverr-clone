@@ -1,32 +1,59 @@
 import { useMemo } from "react";
-import TableSearchField from "../../../components/TableSearchField";
-import { ActionIcon, Button, Table, TableScrollContainer } from "@mantine/core";
-import TablePagination from "../../../components/TablePagination";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import {
   useGetGigsBySellerIdQuery,
   useGetGigsQuery,
 } from "../../../redux/gigs/api";
-import { useAppSelector } from "../../../redux/store";
 import GigsTable from "../../../components/GigsTable";
+import { useAppSelector } from "../../../redux/store";
 
 function ListPage() {
+  const {
+    currentUser: { role, _id },
+  } = useAppSelector((state) => state.auth);
   const [searchParams] = useSearchParams();
-  const { data: gigsData, isLoading } = useGetGigsQuery({
-    searchParams: searchParams.toString(),
-  } as any);
+  const { data: gigsData, isLoading } = useGetGigsQuery(
+    {
+      searchParams: searchParams.toString(),
+    } as any,
+    {
+      skip: role !== "admin",
+    }
+  );
+  const { data: sellerGigsData, isLoading: isLoadingSellerGigs } =
+    useGetGigsBySellerIdQuery(
+      {
+        searchParams: searchParams.toString(),
+        sellerId: _id,
+      } as any,
+      {
+        skip: role !== "user" || !_id,
+      }
+    );
 
   const gigs = useMemo(() => {
-    if (gigsData) {
-      return gigsData.records;
+    if (role === "admin") {
+      if (gigsData) {
+        return gigsData.records;
+      }
+    } else {
+      if (sellerGigsData) {
+        return sellerGigsData.records;
+      }
     }
-  }, [gigsData]);
+  }, [role, gigsData, sellerGigsData]);
 
   const totalPages = useMemo(() => {
-    if (gigsData) {
-      return gigsData.total;
+    if (role === "admin") {
+      if (gigsData) {
+        return gigsData.total;
+      }
+    } else {
+      if (sellerGigsData) {
+        return sellerGigsData.total;
+      }
     }
-  }, [gigsData]);
+  }, [role, gigsData, sellerGigsData]);
 
   return (
     <>

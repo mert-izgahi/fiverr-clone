@@ -13,23 +13,6 @@ function GigsTable({
   totalPages: number;
   isLoading: boolean;
 }) {
-  //   const { currentUser } = useAppSelector((store) => store.auth);
-  //   const { data: sellerGigsData, isLoading } = useGetGigsBySellerIdQuery({
-  //     searchParams: searchParams.toString(),
-  //     sellerId: currentUser._id,
-  //   } as any);
-
-  //   const gigs = useMemo(() => {
-  //     if (sellerGigsData) {
-  //       return sellerGigsData.records;
-  //     }
-  //   }, [sellerGigsData]);
-
-  //   const totalPages = useMemo(() => {
-  //     if (sellerGigsData) {
-  //       return sellerGigsData.total;
-  //     }
-  //   }, [sellerGigsData]);
   return (
     <div className="card">
       <div className="card-header py-3">

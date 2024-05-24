@@ -19,6 +19,7 @@ import {
 import {
   RootLayout,
   RootHomePage,
+  RootExplorePage,
   RootSignInPage,
   RootSignUpPage,
   RootForgetPasswordPage,
@@ -28,6 +29,7 @@ function App() {
     <Routes>
       <Route path="/" element={<RootLayout />}>
         <Route index element={<RootHomePage />} />
+        <Route path="explore" element={<RootExplorePage />} />
         <Route path="sign-in" element={<RootSignInPage />} />
         <Route path="sign-up" element={<RootSignUpPage />} />
         <Route path="forget-password" element={<RootForgetPasswordPage />} />

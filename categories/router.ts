@@ -6,6 +6,7 @@ import {
   getCategory,
   updateCategory,
   deleteCategory,
+  getCategoriesState,
 } from "./controllers";
 import { categoryValidationSchema } from "./validators";
 
@@ -19,6 +20,7 @@ router.post(
   createCategory
 );
 router.get("/categories", getCategories);
+router.get("/categories/state", getCategoriesState);
 router.get("/categories/:id", getCategory);
 router.put(
   "/categories/:id",

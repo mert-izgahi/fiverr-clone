@@ -20,9 +20,56 @@ export const getCategories = asyncWrapper(
     if (search) {
       queryObj.name = { $regex: search, $options: "i" };
     }
-    const categories = await Category.find(queryObj).skip(skip).limit(limit);
-    const total = Math.ceil((await Category.countDocuments(queryObj)) / limit);
-    sendResponse(res, { result: { records: categories, total }, status: 200 });
+
+    if ((req.query.all as string) === "true") {
+      const categories = await Category.find();
+      return sendResponse(res, {
+        result: { records: categories, total: 0 },
+        status: 200,
+      });
+    } else {
+      const categories = await Category.find(queryObj).skip(skip).limit(limit);
+      const total = Math.ceil(
+        (await Category.countDocuments(queryObj)) / limit
+      );
+      return sendResponse(res, {
+        result: { records: categories, total },
+        status: 200,
+      });
+    }
+  }
+);
+
+export const getCategoriesState = asyncWrapper(
+  async (req: Request, res: Response) => {
+    const categories = await Category.aggregate([
+      {
+        $match: {},
+      },
+      {
+        $lookup: {
+          from: "gigs",
+          localField: "_id",
+          foreignField: "category",
+          as: "gigs",
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          name: { $first: "$name" },
+          description: { $first: "$description" },
+          icon: { $first: "$icon" },
+          gigsCount: { $sum: { $size: "$gigs" } },
+        },
+      },
+      {
+        $sort: {
+          gigsCount: -1,
+        },
+      },
+    ]);
+    sendResponse(res, { result: categories, status: 200 });
   }
 );
 
