@@ -10,6 +10,7 @@ export const categoriesApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api",
   }),
+  tagTypes: ["Categories"],
   endpoints: (build) => ({
     getCategories: build.query<{ records: ICategory[]; total: number }, void>({
       query: (args: any) => {
@@ -18,11 +19,54 @@ export const categoriesApi = createApi({
           method: "GET",
         };
       },
-
+      providesTags: ["Categories"],
       transformResponse: defaultTransformResponse,
       transformErrorResponse: defaultTransformErrorResponse,
+    }),
+
+    createCategory: build.mutation<ICategory, ICategory>({
+      query: (args) => {
+        return {
+          url: "/categories",
+          method: "POST",
+          body: args,
+        };
+      },
+      transformResponse: defaultTransformResponse,
+      transformErrorResponse: defaultTransformErrorResponse,
+      invalidatesTags: ["Categories"],
+    }),
+
+    updateCategory: build.mutation<ICategory, ICategory>({
+      query: (args) => {
+        return {
+          url: `/categories/${args._id}`,
+          method: "PUT",
+          body: args,
+        };
+      },
+      transformResponse: defaultTransformResponse,
+      transformErrorResponse: defaultTransformErrorResponse,
+      invalidatesTags: ["Categories"],
+    }),
+
+    deleteCategory: build.mutation<null, { _id: string }>({
+      query: (args) => {
+        return {
+          url: `/categories/${args._id}`,
+          method: "DELETE",
+        };
+      },
+      transformResponse: defaultTransformResponse,
+      transformErrorResponse: defaultTransformErrorResponse,
+      invalidatesTags: ["Categories"],
     }),
   }),
 });
 
-export const { useGetCategoriesQuery } = categoriesApi;
+export const {
+  useGetCategoriesQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+} = categoriesApi;

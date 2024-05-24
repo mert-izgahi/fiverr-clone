@@ -15,6 +15,23 @@ export const themeConstants = {
       description: "form-text",
     };
   },
+
+  drawerClasses: () => {
+    return {
+      content: "bg-body",
+      header: "bg-primary mb-5",
+      body: "p-3",
+      title: "text-white",
+      close: "text-muted",
+    };
+  },
+
+  modalClasses: () => {
+    return {
+      content: "bg-body",
+      header: "bg-body",
+    };
+  },
 };
 
 export const defaultTransformResponse = (response: {

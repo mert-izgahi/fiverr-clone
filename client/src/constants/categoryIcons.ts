@@ -1,8 +1,3 @@
-import { connectDb } from "./helpers";
-import { faker } from "@faker-js/faker";
-
-import { Category } from "./categories/model";
-import { User } from "./users/model";
 export const categoryIcons = [
   { categoryLabel: "Design", categoryIcon: "bi bi-palette" },
   { categoryLabel: "Web Development", categoryIcon: "bi bi-code" },
@@ -51,68 +46,3 @@ export const categoryIcons = [
   { categoryLabel: "Achievements/Awards", categoryIcon: "bi bi-trophy" },
   { categoryLabel: "Recognition/Certification", categoryIcon: "bi bi-award" },
 ];
-
-const usesAvatars = [
-  "https://source.unsplash.com/random/400x300/?avatar",
-  "https://source.unsplash.com/random/400x300/?user",
-  "https://source.unsplash.com/random/400x300/?profile",
-  "https://source.unsplash.com/random/400x300/?profile-picture",
-  "https://source.unsplash.com/random/400x300/?face",
-  "https://source.unsplash.com/random/400x300/?human",
-  "https://source.unsplash.com/random/400x300/?human-face",
-  "https://source.unsplash.com/random/400x300/?human-head",
-  "https://source.unsplash.com/random/400x300/?human-face-mask",
-  "https://source.unsplash.com/random/400x300/?human-face-mask-1",
-];
-
-const randomUser = () => {
-  return {
-    firstName: faker.person.firstName(),
-    lastName: faker.person.lastName(),
-    email: faker.internet.email(),
-    password: "Aa123456",
-    role: "user",
-    imageUrl: faker.image.avatar(),
-    bio: faker.person.bio(),
-    gender: faker.helpers.arrayElement(["male", "female", null]),
-  };
-};
-
-// const randomCategory = () => {
-
-//   return {
-//     name: faker.commerce.department(),
-//     description: faker.commerce.productDescription(),
-//     icon: faker.helpers.arrayElement(categoryIcons),
-//   };
-// };
-
-const seed = async () => {
-  const db = await connectDb();
-  try {
-    await User.deleteMany({});
-    await Category.deleteMany({});
-    const users = [];
-    for (let i = 0; i < 30; i++) {
-      users.push(randomUser());
-    }
-    const categories = [];
-    for (let i = 0; i < categoryIcons.length; i++) {
-      // categories.push(randomCategory());
-      categories.push({
-        name: categoryIcons[i].categoryLabel,
-        description: faker.commerce.productDescription(),
-        icon: categoryIcons[i].categoryIcon,
-      });
-    }
-    await User.insertMany(users);
-    await Category.insertMany(categories);
-    console.log("👉 Seeded successfully");
-    process.exit(0);
-  } catch (error) {
-    console.log(error);
-    process.exit(0);
-  }
-};
-
-seed();

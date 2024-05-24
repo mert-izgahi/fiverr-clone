@@ -4,6 +4,9 @@ import { useMemo } from "react";
 import TableSearchField from "../../../components/TableSearchField";
 import { useSearchParams } from "react-router-dom";
 import TablePagination from "../../../components/TablePagination";
+import CategoryDrawerForm from "../../../components/CategoryDrawerForm";
+import { categoryIcons } from "../../../constants/categoryIcons";
+import CategoryDeleteModal from "../../../components/CategoryDeleteModal";
 
 function ListPage() {
   const [searchParams] = useSearchParams();
@@ -37,7 +40,12 @@ function ListPage() {
                 <h4 className="card-title mb-0">Categories List</h4>
                 <div className="d-flex align-items-center gap-3 ms-auto">
                   <TableSearchField />
-                  <Button>New Category</Button>
+                  <CategoryDrawerForm
+                    mode="create"
+                    name={categoryIcons[0].categoryLabel}
+                    icon={categoryIcons[0].categoryIcon}
+                    description=""
+                  />
                 </div>
               </div>
             </div>
@@ -46,6 +54,7 @@ function ListPage() {
                 <Table className="table table-hover align-middle mb-0">
                   <Table.Thead>
                     <Table.Tr>
+                      <Table.Th>#</Table.Th>
                       <Table.Th>Name</Table.Th>
                       <Table.Th>Icon</Table.Th>
                       <Table.Th>Gigs</Table.Th>
@@ -57,6 +66,7 @@ function ListPage() {
                     {categories &&
                       categories.map((category) => (
                         <Table.Tr key={category._id}>
+                          <Table.Td>{category._id}</Table.Td>
                           <Table.Td>{category.name}</Table.Td>
                           <Table.Td>
                             <i className={category.icon}></i>
@@ -64,12 +74,15 @@ function ListPage() {
                           <Table.Td>{0}</Table.Td>
                           <Table.Td>{0}</Table.Td>
                           <Table.Td>
-                            <ActionIcon className="btn btn-ghost">
-                              <i className="bi bi-pencil-square"></i>
-                            </ActionIcon>
-                            <ActionIcon className="btn btn-ghost">
-                              <i className="bi bi-trash"></i>
-                            </ActionIcon>
+                            {/*  */}
+                            <CategoryDrawerForm
+                              mode="update"
+                              categoryId={category._id}
+                              name={category.name}
+                              icon={category.icon}
+                              description={category.description}
+                            />
+                            <CategoryDeleteModal categoryId={category._id} />
                           </Table.Td>
                         </Table.Tr>
                       ))}
