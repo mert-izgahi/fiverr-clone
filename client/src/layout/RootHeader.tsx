@@ -1,8 +1,11 @@
 import { ActionIcon, Button } from "@mantine/core";
 import { Link, NavLink } from "react-router-dom";
 import ThemeToggler from "../components/ThemeToggler";
+import { useAppSelector } from "../redux/store";
+import UserMenu from "../components/UserMenu";
 
 function RootHeader() {
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   return (
     <div className="vstack gap-2 bg-body-tertiary py-2">
       <div className="navbar navbar-expand-lg bg-body-tertiary">
@@ -12,9 +15,11 @@ function RootHeader() {
           </Link>
 
           <div className="d-flex align-items-center gap-2 d-lg-none">
-            <Link className="btn btn-primary btn-sm" to={"/sign-up"}>
-              Join now
-            </Link>
+            {!isAuthenticated && (
+              <Link className="btn btn-primary btn-sm" to={"/sign-up"}>
+                Join now
+              </Link>
+            )}
             <ThemeToggler />
             <ActionIcon
               className="btn btn-ghost d-lg-none"
@@ -41,16 +46,24 @@ function RootHeader() {
                   Explore
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink to={"/sign-in"} className="nav-link">
-                  Sign in
-                </NavLink>
-              </li>
-              <li className="nav-item d-none d-lg-block">
-                <Button component={Link} to={"/sign-up"}>
-                  Join now
-                </Button>
-              </li>
+              {!isAuthenticated && (
+                <>
+                  <li className="nav-item">
+                    <NavLink to={"/sign-in"} className="nav-link">
+                      Sign in
+                    </NavLink>
+                  </li>
+                  <li className="nav-item d-none d-lg-block">
+                    <Button component={Link} to={"/sign-up"}>
+                      Join now
+                    </Button>
+                  </li>
+                </>
+              )}
+
+              {
+                isAuthenticated && <UserMenu/>
+              }
               <li className="nav-item d-none d-lg-block">
                 <ThemeToggler />
               </li>
@@ -70,7 +83,10 @@ function RootHeader() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-muted bg-primary rounded" to={"/explore"}>
+                <Link
+                  className="nav-link text-muted bg-primary rounded"
+                  to={"/explore"}
+                >
                   <i className="bi bi-palette me-2"></i>
                   Web design
                 </Link>
