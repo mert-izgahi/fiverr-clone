@@ -23,7 +23,20 @@ export const gigsApi = createApi({
       transformResponse: defaultTransformResponse,
       transformErrorResponse: defaultTransformErrorResponse,
     }),
-
+    getGigsBySellerId: build.query<
+      { records: IGig[]; total: number },
+      { sellerId: string; searchParams: string }
+    >({
+      query: (args) => {
+        return {
+          url: `/gigs/by-seller/${args.sellerId}?${args.searchParams}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["Gigs"],
+      transformResponse: defaultTransformResponse,
+      transformErrorResponse: defaultTransformErrorResponse,
+    }),
     getGig: build.query<IGig, { _id: string }>({
       query: (args) => {
         return {
@@ -79,6 +92,7 @@ export const gigsApi = createApi({
 export const {
   useGetGigsQuery,
   useGetGigQuery,
+  useGetGigsBySellerIdQuery,
   useCreateGigMutation,
   useUpdateGigMutation,
   useDeleteGigMutation,

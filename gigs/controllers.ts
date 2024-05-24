@@ -24,19 +24,24 @@ export const getGigs = asyncWrapper(async (req: Request, res: Response) => {
   sendResponse(res, { result: { records: gigs, total }, status: 200 });
 });
 
-export const getMyGigs = asyncWrapper(async (req: Request, res: Response) => {
-  const search = req.query.search as string;
-  const page = parseInt(req.query.page as string) || 1;
-  const limit = parseInt(req.query.limit as string) || 10;
-  const skip = (page - 1) * limit;
-  const queryObj = {} as any;
-  if (search) {
-    queryObj.title = { $regex: search, $options: "i" };
+export const getGigsBySellerId = asyncWrapper(
+  async (req: Request, res: Response) => {
+    const { sellerId } = req.params;
+    const search = req.query.search as string;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+    const queryObj = {
+      seller: sellerId,
+    } as any;
+    if (search) {
+      queryObj.title = { $regex: search, $options: "i" };
+    }
+    const gigs = await Gig.find(queryObj).skip(skip).limit(limit);
+    const total = Math.ceil((await Gig.countDocuments(queryObj)) / limit);
+    sendResponse(res, { result: { records: gigs, total }, status: 200 });
   }
-  const gigs = await Gig.find({ seller: res.locals.currentUserId }).skip(skip).limit(limit);
-  const total = Math.ceil((await Gig.countDocuments({ seller: res.locals.currentUserId })) / limit);
-  sendResponse(res, { result: { records: gigs, total }, status: 200 });
-});
+);
 
 export const getGig = asyncWrapper(async (req: Request, res: Response) => {
   const gig = await Gig.findById(req.params.id);

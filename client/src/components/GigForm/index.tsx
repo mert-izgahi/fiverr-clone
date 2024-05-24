@@ -1,16 +1,20 @@
 import { Button, Stepper } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
 import Step5 from "./Step5";
-import { useCreateGigMutation } from "../../redux/gigs/api";
+import {
+  useCreateGigMutation,
+  useUpdateGigMutation,
+} from "../../redux/gigs/api";
 import { useUploadImageMutation } from "../../redux/utils/api";
 import GigPreview from "./GigPreview";
 import toast from "react-hot-toast";
+import { IGig } from "../../types";
 
 const steps = [
   {
@@ -62,9 +66,7 @@ const steps = [
       images: Yup.array()
         .length(3, "Must be 3 images")
         .required("Images are required"),
-      imagesFiles: Yup.array()
-        .length(3, "Must be 3 images")
-        .required("Images files are required"),
+      imagesFiles: Yup.array().optional(),
     }),
   },
   {
@@ -73,10 +75,11 @@ const steps = [
   },
 ];
 
-function GigForm({ mode }: { mode: "create" | "edit" }) {
+function GigForm({ mode, gig }: { mode: "create" | "edit"; gig?: IGig }) {
   const [createGig, { isLoading: createGigPending, error: createGigError }] =
     useCreateGigMutation();
-
+  const [updateGig, { isLoading: updateGigPending, error: updateGigError }] =
+    useUpdateGigMutation();
   const [
     uploadImage,
     { isLoading: uploadImagePending, error: uploadImageError },
@@ -132,6 +135,17 @@ function GigForm({ mode }: { mode: "create" | "edit" }) {
             toast.error(err);
           });
       }
+
+      if (mode === "edit") {
+        await updateGig({ _id: gig?._id as string, ...values })
+          .unwrap()
+          .then(() => {
+            toast.success("Gig updated successfully");
+          })
+          .catch((err) => {
+            toast.error(err);
+          });
+      }
     }
   };
 
@@ -140,13 +154,21 @@ function GigForm({ mode }: { mode: "create" | "edit" }) {
       setActive((current) => current - 1);
     }
   };
+
+  useEffect(() => {
+    if (gig) {
+      form.setValues(gig as any);
+    }
+  }, [gig]);
+  console.log(form.errors);
+
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <div className="card">
         <div className="card-header py-3">
           <div className="d-flex justify-content-between align-items-center">
             <Stepper
-              allowNextStepsSelect={false}
+              allowNextStepsSelect={mode === "edit"}
               active={active}
               onStepClick={setActive}
               classNames={{
@@ -184,10 +206,18 @@ function GigForm({ mode }: { mode: "create" | "edit" }) {
             </Button>
             <Button
               type="submit"
-              disabled={createGigPending || uploadImagePending}
-              loading={createGigPending || uploadImagePending}
+              disabled={
+                createGigPending || uploadImagePending || updateGigPending
+              }
+              loading={
+                createGigPending || uploadImagePending || updateGigPending
+              }
             >
-              {active === 5 ? "Publish Gig" : "Next"}
+              {active === 5
+                ? mode === "create"
+                  ? "Publish Gig"
+                  : "Update Gig"
+                : "Next"}
             </Button>
           </div>
         </div>
