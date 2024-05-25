@@ -23,6 +23,7 @@ import {
   RootSignInPage,
   RootSignUpPage,
   RootForgetPasswordPage,
+  RootGigPage,
 } from "./pages/root";
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
       <Route path="/" element={<RootLayout />}>
         <Route index element={<RootHomePage />} />
         <Route path="explore" element={<RootExplorePage />} />
+        <Route path="gigs/:id" element={<RootGigPage />} />
         <Route path="sign-in" element={<RootSignInPage />} />
         <Route path="sign-up" element={<RootSignUpPage />} />
         <Route path="forget-password" element={<RootForgetPasswordPage />} />

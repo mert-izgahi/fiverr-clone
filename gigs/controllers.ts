@@ -20,8 +20,8 @@ export const getGigs = asyncWrapper(async (req: Request, res: Response) => {
   if (search) {
     queryObj.title = { $regex: search, $options: "i" };
   }
-  if(category){
-    queryObj.category = category
+  if (category) {
+    queryObj.category = category;
   }
   const gigs = await Gig.find(queryObj)
     .populate({
@@ -55,7 +55,12 @@ export const getGigsBySellerId = asyncWrapper(
 );
 
 export const getGig = asyncWrapper(async (req: Request, res: Response) => {
-  const gig = await Gig.findById(req.params.id);
+  const gig = await Gig.findById(req.params.id)
+    .populate({
+      path: "seller",
+      select: "firstName lastName imageUrl",
+    })
+    .populate("category");
   sendResponse(res, { result: gig, status: 200 });
 });
 
