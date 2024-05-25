@@ -73,3 +73,13 @@ export interface INotification {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface IReview {
+  _id: string;
+  gig: IGig;
+  author: IUser;
+  content: string;
+  rating: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}

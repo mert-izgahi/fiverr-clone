@@ -30,6 +30,21 @@ function DashboardSidebar() {
       path: "/dashboard/conversations",
       icon: <i className="bi bi-chat me-2"></i>,
     },
+    {
+      title: "Notifications",
+      path: "/dashboard/notifications",
+      icon: <i className="bi bi-bell me-2"></i>,
+    },
+    {
+      title: "Reviews",
+      path: "/dashboard/reviews",
+      icon: <i className="bi bi-star me-2"></i>,
+    },
+    {
+      title: "Settings",
+      path: "/dashboard/settings",
+      icon: <i className="bi bi-gear me-2"></i>,
+    },
   ];
 
   return (

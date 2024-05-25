@@ -10,10 +10,9 @@ import SearchForm from "../components/SearchForm";
 import NotificationsMenu from "../components/NotificationsMenu";
 
 function RootHeader() {
-  const {
-    isAuthenticated,
-    currentUser: { role },
-  } = useAppSelector((state) => state.auth);
+  const { isAuthenticated, currentUser } = useAppSelector(
+    (state) => state.auth
+  );
   const {
     data,
     isLoading: isLoadingCategories,
@@ -88,14 +87,6 @@ function RootHeader() {
                     </Button>
                   </li>
                 </>
-              )}
-
-              {isAuthenticated && role === "admin" && (
-                <li className="nav-item">
-                  <NavLink to={"/dashboard"} className="nav-link">
-                    Dashboard
-                  </NavLink>
-                </li>
               )}
 
               {isAuthenticated && (

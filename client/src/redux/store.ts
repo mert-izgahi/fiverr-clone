@@ -21,6 +21,7 @@ import { ordersApi } from "./orders/api";
 import {notificationsApi} from "./notifications/api";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
+
 const rootReducer = combineReducers({
   colorSchema: colorSchemaSlice.reducer,
   auth: authSlice.reducer,
@@ -30,7 +31,8 @@ const rootReducer = combineReducers({
   [utilsApi.reducerPath]: utilsApi.reducer,
   [gigsApi.reducerPath]: gigsApi.reducer,
   [ordersApi.reducerPath]: ordersApi.reducer,
-  [notificationsApi.reducerPath]: notificationsApi.reducer
+  [notificationsApi.reducerPath]: notificationsApi.reducer,
+  
 });
 
 const persistedReducer = persistReducer(
@@ -45,7 +47,8 @@ const persistedReducer = persistReducer(
       utilsApi.reducerPath,
       gigsApi.reducerPath,
       ordersApi.reducerPath,
-      notificationsApi.reducerPath
+      notificationsApi.reducerPath,
+      
     ],
   },
   rootReducer
@@ -71,7 +74,8 @@ const store = configureStore({
       .concat(utilsApi.middleware)
       .concat(gigsApi.middleware)
       .concat(ordersApi.middleware)
-      .concat(notificationsApi.middleware),
+      .concat(notificationsApi.middleware)
+      
 });
 
 setupListeners(store.dispatch);

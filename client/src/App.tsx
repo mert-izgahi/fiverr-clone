@@ -15,6 +15,7 @@ import {
   DashboardUsersListPage,
   DashboardUsersEditPage,
   DashboardNotificationsPage,
+  DashboardReviewsPage,
 } from "./pages/dashboard";
 
 import {
@@ -29,24 +30,54 @@ import {
   RootPaymentResultPage,
   RootOrdersPage,
 } from "./pages/root";
+import ProtectedRoute from "./components/ProtectedRoute";
 function App() {
   return (
     <Routes>
       <Route path="/" element={<RootLayout />}>
         <Route index element={<RootHomePage />} />
         <Route path="explore" element={<RootExplorePage />} />
-        <Route path="orders" element={<RootOrdersPage />} />
+        <Route
+          path="orders"
+          element={
+            <ProtectedRoute>
+              <RootOrdersPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="gigs/:id" element={<RootGigPage />} />
-        <Route path="gigs/:id/payment" element={<RootPaymentPage />} />
-        <Route path="payment-result" element={<RootPaymentResultPage />} />
+        <Route
+          path="gigs/:id/payment"
+          element={
+            <ProtectedRoute>
+              <RootPaymentPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="payment-result"
+          element={
+            <ProtectedRoute>
+              <RootPaymentResultPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="sign-in" element={<RootSignInPage />} />
         <Route path="sign-up" element={<RootSignUpPage />} />
         <Route path="forget-password" element={<RootForgetPasswordPage />} />
       </Route>
-      <Route path="/dashboard" element={<DashboardLayout />}>
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<DashboardOverviewPage />} />
         <Route path="account" element={<DashboardAccountPage />} />
         <Route path="notifications" element={<DashboardNotificationsPage />} />
+        <Route path="reviews" element={<DashboardReviewsPage />} />
         <Route path="settings" element={<DashboardSettingsPage />} />
         <Route path="conversations">
           <Route index element={<DashboardConversationsListPage />} />

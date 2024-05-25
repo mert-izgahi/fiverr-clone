@@ -35,6 +35,7 @@ export const getGigs = asyncWrapper(async (req: Request, res: Response) => {
   sendResponse(res, { result: { records: gigs, total }, status: 200 });
 });
 
+
 export const getGigsBySellerId = asyncWrapper(
   async (req: Request, res: Response) => {
     const { sellerId } = req.params;

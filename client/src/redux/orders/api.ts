@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IGig, IOrder } from "../../types";
+import { IOrder } from "../../types";
 import {
   defaultTransformErrorResponse,
   defaultTransformResponse,
@@ -12,7 +12,10 @@ export const ordersApi = createApi({
   }),
   tagTypes: ["Orders"],
   endpoints: (build) => ({
-    createOrder: build.mutation<IOrder, { gigId: string,paymentIntentId: string,paymentStatus: string }>({
+    createOrder: build.mutation<
+      IOrder,
+      { gigId: string; paymentIntentId: string; paymentStatus: string }
+    >({
       query: (args) => {
         return {
           url: "/orders",
