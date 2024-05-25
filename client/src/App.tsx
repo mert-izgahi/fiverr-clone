@@ -24,6 +24,8 @@ import {
   RootSignUpPage,
   RootForgetPasswordPage,
   RootGigPage,
+  RootPaymentPage,
+  RootPaymentResultPage,
 } from "./pages/root";
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
         <Route index element={<RootHomePage />} />
         <Route path="explore" element={<RootExplorePage />} />
         <Route path="gigs/:id" element={<RootGigPage />} />
+        <Route path="gigs/:id/payment" element={<RootPaymentPage />} />
+        <Route path="payment-result" element={<RootPaymentResultPage />} />
         <Route path="sign-in" element={<RootSignInPage />} />
         <Route path="sign-up" element={<RootSignUpPage />} />
         <Route path="forget-password" element={<RootForgetPasswordPage />} />

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { ICategory } from "../categories/model";
+import { IUser } from "../users/model";
 
 interface IGig extends mongoose.Document {
   title: string;
@@ -15,7 +16,7 @@ interface IGig extends mongoose.Document {
     answer: string;
   }[];
   coverUrl: string;
-  seller: mongoose.Types.ObjectId;
+  seller: mongoose.Types.ObjectId | IUser;
   views?: number;
   rating?: number;
   totalReviews?: number;

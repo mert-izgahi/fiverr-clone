@@ -17,6 +17,8 @@
     "@mantine/hooks": "^7.10.0",
     "@popperjs/core": "^2.11.8",
     "@reduxjs/toolkit": "^2.2.5",
+    "@stripe/react-stripe-js": "^2.7.1",
+    "@stripe/stripe-js": "^3.4.1",
     "@types/redux-persist": "^4.3.1",
     "bootstrap": "^5.3.3",
     "dayjs": "^1.11.11",

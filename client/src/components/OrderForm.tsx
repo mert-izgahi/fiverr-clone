@@ -1,8 +1,25 @@
 import { Button } from "@mantine/core";
 import { IGig } from "../types";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../redux/store";
+import { useCreateOrderMutation } from "../redux/orders/api";
+import toast from "react-hot-toast";
 
 function OrderForm({ gig }: { gig: IGig }) {
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  // const [createOrder, { isLoading: createPending, error: createError }] =
+  //   useCreateOrderMutation();
+
+  // const handleCreateOrder = async () => {
+  //   await createOrder({ gigId: gig._id! })
+  //     .unwrap()
+  //     .then(() => {
+  //       toast.success("Order created successfully");
+  //     })
+  //     .catch((error) => {
+  //       toast.error(error);
+  //     });
+  // };
   return (
     <div className="card py-4 px-3">
       <div className="card-header border-0 bg-transparent">
@@ -26,27 +43,39 @@ function OrderForm({ gig }: { gig: IGig }) {
           </p>
         ))}
       </div>
+      {isAuthenticated && (
+        <div className="card-footer border-0 bg-transparent">
+          <div className="vstack gap-4">
+            <Button component={Link} to={`/gigs/${gig._id}/payment`} fullWidth>
+              Continue
+            </Button>
 
-      <div className="card-footer border-0 bg-transparent">
-        <div className="vstack gap-4">
-          <Button
-            component={Link}
-            to={`/dashboard/gigs/${gig._id}/orders/create`}
-            fullWidth
-          >
-            Continue
-          </Button>
-
-          <Button
-            component={Link}
-            to={`/dashboard/gigs/${gig._id}`}
-            variant="outline"
-            fullWidth
-          >
-            Contact Seller
-          </Button>
+            <Button
+              component={Link}
+              to={`/dashboard/gigs/${gig._id}`}
+              variant="outline"
+              fullWidth
+            >
+              Contact Seller
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
+
+      {!isAuthenticated && (
+        <div className="card-footer border-0 bg-transparent">
+          <div className="vstack gap-4">
+            <Button
+              component={Link}
+              to={`/sign-in?redirect=/gigs/${gig._id}`}
+              variant="outline"
+              fullWidth
+            >
+              Sign In to Order
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

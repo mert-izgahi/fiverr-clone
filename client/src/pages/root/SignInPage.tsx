@@ -3,12 +3,14 @@ import { useForm, yupResolver } from "@mantine/form";
 import { Alert, Button, PasswordInput, TextInput } from "@mantine/core";
 import { themeConstants } from "../../helpers";
 import { useSignInMutation } from "../../redux/auth/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string().required("Password is required"),
 });
 function SignInPage() {
+  const [searchParams] = useSearchParams();
+  const redirect = searchParams.get("redirect");
   const [signIn, { isLoading: signInPending, error: signInError }] =
     useSignInMutation();
   const form = useForm({
@@ -26,7 +28,11 @@ function SignInPage() {
     await signIn(values)
       .unwrap()
       .then(() => {
-        navigate("/");
+        if (redirect) {
+          navigate(redirect);
+        } else {
+          navigate("/");
+        }
       });
   };
 

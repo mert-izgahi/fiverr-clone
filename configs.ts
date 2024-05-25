@@ -21,6 +21,5 @@ export default {
   LIMIT_PER_PAGE: 10,
   CLIENT_URL: process.env.CLIENT_URL || "http://localhost:3000",
   NODE_ENV: process.env.NODE_ENV || "development",
-  ADMIN_EMAIL: process.env.ADMIN_EMAIL,
-  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+  STRIPE_SECRET_KEY:process.env.STRIPE_SECRET_KEY
 };

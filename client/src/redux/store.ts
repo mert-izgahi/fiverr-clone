@@ -17,6 +17,8 @@ import { categoriesApi } from "./categories/api";
 import { usersApi } from "./users/api";
 import { utilsApi } from "./utils/api";
 import { gigsApi } from "./gigs/api";
+import { ordersApi } from "./orders/api";
+
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 const rootReducer = combineReducers({
@@ -27,6 +29,7 @@ const rootReducer = combineReducers({
   [usersApi.reducerPath]: usersApi.reducer,
   [utilsApi.reducerPath]: utilsApi.reducer,
   [gigsApi.reducerPath]: gigsApi.reducer,
+  [ordersApi.reducerPath]: ordersApi.reducer,
 });
 
 const persistedReducer = persistReducer(
@@ -40,6 +43,7 @@ const persistedReducer = persistReducer(
       usersApi.reducerPath,
       utilsApi.reducerPath,
       gigsApi.reducerPath,
+      ordersApi.reducerPath,
     ],
   },
   rootReducer
@@ -63,7 +67,8 @@ const store = configureStore({
       .concat(categoriesApi.middleware)
       .concat(usersApi.middleware)
       .concat(utilsApi.middleware)
-      .concat(gigsApi.middleware),
+      .concat(gigsApi.middleware)
+      .concat(ordersApi.middleware),
 });
 
 setupListeners(store.dispatch);

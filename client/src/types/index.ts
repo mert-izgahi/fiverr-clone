@@ -48,3 +48,15 @@ export interface IGig {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+
+export interface IOrder {
+  _id: string;
+  gig: IGig;
+  gigTitle: string;
+  gigCoverUrl: string;
+  price: number;
+  buyer: IUser;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
