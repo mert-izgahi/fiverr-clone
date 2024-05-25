@@ -2,6 +2,7 @@ import AccountPage from "./AccountPage";
 import DashboardLayout from "./DashboardLayout";
 import OverviewPage from "./OverviewPage";
 import SettingsPage from "./SettingsPage";
+import NotificationsPage from "./NotificationsPage";
 import {
   ConversationsListPage,
   ConversationsDetailsPage,
@@ -25,5 +26,6 @@ export {
   CategoriesListPage as DashboardCategoriesListPage,
   UsersListPage as DashboardUsersListPage,
   UsersEditPage as DashboardUsersEditPage,
+  NotificationsPage as DashboardNotificationsPage,
   DashboardLayout,
 };

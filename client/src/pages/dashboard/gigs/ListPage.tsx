@@ -1,9 +1,6 @@
 import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import {
-  useGetGigsBySellerIdQuery,
-  useGetGigsQuery,
-} from "../../../redux/gigs/api";
+import { useGetGigsBySellerIdQuery } from "../../../redux/gigs/api";
 import GigsTable from "../../../components/GigsTable";
 import { useAppSelector } from "../../../redux/store";
 
@@ -12,52 +9,31 @@ function ListPage() {
     currentUser: { role, _id },
   } = useAppSelector((state) => state.auth);
   const [searchParams] = useSearchParams();
-  const { data: gigsData, isLoading } = useGetGigsQuery(
-    {
-      searchParams: searchParams.toString(),
-    } as any,
-    {
-      skip: role !== "admin",
-    }
-  );
   const { data: sellerGigsData, isLoading: isLoadingSellerGigs } =
-    useGetGigsBySellerIdQuery(
-      {
-        searchParams: searchParams.toString(),
-        sellerId: _id,
-      } as any,
-      {
-        skip: role !== "user" || !_id,
-      }
-    );
+    useGetGigsBySellerIdQuery({
+      searchParams: searchParams.toString(),
+      sellerId: _id,
+    } as any);
 
   const gigs = useMemo(() => {
-    if (role === "admin") {
-      if (gigsData) {
-        return gigsData.records;
-      }
-    } else {
-      if (sellerGigsData) {
-        return sellerGigsData.records;
-      }
+    if (sellerGigsData) {
+      return sellerGigsData.records;
     }
-  }, [role, gigsData, sellerGigsData]);
+  }, [role, sellerGigsData]);
 
   const totalPages = useMemo(() => {
-    if (role === "admin") {
-      if (gigsData) {
-        return gigsData.total;
-      }
-    } else {
-      if (sellerGigsData) {
-        return sellerGigsData.total;
-      }
+    if (sellerGigsData) {
+      return sellerGigsData.total;
     }
-  }, [role, gigsData, sellerGigsData]);
+  }, [role, sellerGigsData]);
 
   return (
     <>
-      <GigsTable gigs={gigs!} totalPages={totalPages!} isLoading={isLoading} />
+      <GigsTable
+        gigs={gigs!}
+        totalPages={totalPages!}
+        isLoading={isLoadingSellerGigs}
+      />
     </>
   );
 }

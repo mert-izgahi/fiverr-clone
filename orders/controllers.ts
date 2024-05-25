@@ -3,8 +3,7 @@ import { asyncWrapper } from "../middlewares";
 import { Request, Response } from "express";
 import { Order } from "./model";
 import { Gig } from "../gigs/model";
-import configs from "../configs";
-const stripe = require("stripe")(configs.STRIPE_SECRET_KEY);
+import { notificationManager } from "../notifications/NotificationManager";
 
 export const createOrder = asyncWrapper(async (req: Request, res: Response) => {
   const { currentUserId } = res.locals;
@@ -20,6 +19,7 @@ export const createOrder = asyncWrapper(async (req: Request, res: Response) => {
     gigTitle: gig.title,
     gigCoverUrl: gig.coverUrl,
     seller: gig.seller._id,
+    buyer: currentUserId,
     price: gig.price,
     paymentIntentId: paymentIntentId,
     paymentStatus: paymentStatus,
@@ -27,29 +27,23 @@ export const createOrder = asyncWrapper(async (req: Request, res: Response) => {
 
   const order = await Order.create(args);
 
+  // Create notification
+  await notificationManager.createNotification({
+    userId: gig.seller._id as string,
+    message: `New order from ${currentUserId}`,
+    isRead: false,
+    payload: {
+      gigId: gig._id,
+      seller: gig.seller._id,
+    },
+    type:"NEW_ORDER"
+  });
+
   sendResponse(res, { result: order, status: 201 });
 });
 
-export const checkSessionState = asyncWrapper(
-  async (req: Request, res: Response) => {
-    const sessionId = req.query.session_id as string;
-
-    const session = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: [
-        "line_items",
-        "line_items.data.price.product",
-        "customer_details",
-      ],
-    });
-
-    sendResponse(res, {
-      result: {
-        id: session.id,
-        status: session.status,
-        line_items: session.line_items,
-        customer_details: session.customer_details,
-      },
-      status: 200,
-    });
-  }
-);
+export const getOrders = asyncWrapper(async (req: Request, res: Response) => {
+  const { currentUserId } = res.locals;
+  const orders = await Order.find({ buyer: currentUserId }).populate("gig");
+  sendResponse(res, { result: orders, status: 200 });
+});

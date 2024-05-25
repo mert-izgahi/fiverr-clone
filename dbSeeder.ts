@@ -83,53 +83,53 @@ const faqList = [
   },
 ];
 
-export const categories = [
-  { categoryLabel: "Design", categoryIcon: "bi bi-palette" },
-  { categoryLabel: "Web Development", categoryIcon: "bi bi-code" },
-  { categoryLabel: "Programming", categoryIcon: "bi bi-terminal" },
-  { categoryLabel: "Settings/Configuration", categoryIcon: "bi bi-gear" },
+export const categoriesList = [
+  { name: "Design", icon: "bi bi-palette" },
+  { name: "Web Development", icon: "bi bi-code" },
+  { name: "Programming", icon: "bi bi-terminal" },
+  { name: "Settings/Configuration", icon: "bi bi-gear" },
   {
-    categoryLabel: "Management/Project Management",
-    categoryIcon: "bi bi-diagram-3",
+    name: "Management/Project Management",
+    icon: "bi bi-diagram-3",
   },
-  { categoryLabel: "Translation", categoryIcon: "bi bi-translate" },
-  { categoryLabel: "Marketing/Analytics", categoryIcon: "bi bi-graph-up" },
-  { categoryLabel: "Team/Collaboration", categoryIcon: "bi bi-people" },
-  { categoryLabel: "Global/International", categoryIcon: "bi bi-globe" },
-  { categoryLabel: "Education/Reading", categoryIcon: "bi bi-book" },
-  { categoryLabel: "Scheduling/Events", categoryIcon: "bi bi-calendar" },
-  { categoryLabel: "Business/Work", categoryIcon: "bi bi-briefcase" },
-  { categoryLabel: "Communication/Support", categoryIcon: "bi bi-chat-dots" },
-  { categoryLabel: "Data/Database", categoryIcon: "bi bi-stack" },
-  { categoryLabel: "Finance/Budgeting", categoryIcon: "bi bi-wallet" },
-  { categoryLabel: "Statistics/Reports", categoryIcon: "bi bi-bar-chart" },
-  { categoryLabel: "Cloud Services", categoryIcon: "bi bi-cloud" },
-  { categoryLabel: "Social/Community", categoryIcon: "bi bi-emoji-smile" },
-  { categoryLabel: "Music/Audio", categoryIcon: "bi bi-music-note" },
-  { categoryLabel: "Photography/Media", categoryIcon: "bi bi-camera" },
-  { categoryLabel: "Ecommerce/Retail", categoryIcon: "bi bi-shop" },
-  { categoryLabel: "Logistics/Delivery", categoryIcon: "bi bi-truck" },
-  { categoryLabel: "Writing/Editing", categoryIcon: "bi bi-pencil" },
-  { categoryLabel: "Video/Media Production", categoryIcon: "bi bi-film" },
-  { categoryLabel: "Technology/IT", categoryIcon: "bi bi-laptop" },
-  { categoryLabel: "Ideas/Innovation", categoryIcon: "bi bi-lightbulb" },
-  { categoryLabel: "Security/Protection", categoryIcon: "bi bi-shield-lock" },
-  { categoryLabel: "Art/Creative Work", categoryIcon: "bi bi-brush" },
-  { categoryLabel: "Notifications/Alerts", categoryIcon: "bi bi-bell" },
+  { name: "Translation", icon: "bi bi-translate" },
+  { name: "Marketing/Analytics", icon: "bi bi-graph-up" },
+  { name: "Team/Collaboration", icon: "bi bi-people" },
+  { name: "Global/International", icon: "bi bi-globe" },
+  { name: "Education/Reading", icon: "bi bi-book" },
+  { name: "Scheduling/Events", icon: "bi bi-calendar" },
+  { name: "Business/Work", icon: "bi bi-briefcase" },
+  { name: "Communication/Support", icon: "bi bi-chat-dots" },
+  { name: "Data/Database", icon: "bi bi-stack" },
+  { name: "Finance/Budgeting", icon: "bi bi-wallet" },
+  { name: "Statistics/Reports", icon: "bi bi-bar-chart" },
+  { name: "Cloud Services", icon: "bi bi-cloud" },
+  { name: "Social/Community", icon: "bi bi-emoji-smile" },
+  { name: "Music/Audio", icon: "bi bi-music-note" },
+  { name: "Photography/Media", icon: "bi bi-camera" },
+  { name: "Ecommerce/Retail", icon: "bi bi-shop" },
+  { name: "Logistics/Delivery", icon: "bi bi-truck" },
+  { name: "Writing/Editing", icon: "bi bi-pencil" },
+  { name: "Video/Media Production", icon: "bi bi-film" },
+  { name: "Technology/IT", icon: "bi bi-laptop" },
+  { name: "Ideas/Innovation", icon: "bi bi-lightbulb" },
+  { name: "Security/Protection", icon: "bi bi-shield-lock" },
+  { name: "Art/Creative Work", icon: "bi bi-brush" },
+  { name: "Notifications/Alerts", icon: "bi bi-bell" },
   {
-    categoryLabel: "Documents/File Management",
-    categoryIcon: "bi bi-file-earmark",
+    name: "Documents/File Management",
+    icon: "bi bi-file-earmark",
   },
-  { categoryLabel: "Organization/Storage", categoryIcon: "bi bi-folder" },
-  { categoryLabel: "Connections/Networking", categoryIcon: "bi bi-link-45deg" },
-  { categoryLabel: "Travel/Location", categoryIcon: "bi bi-map" },
-  { categoryLabel: "Shopping/Commerce", categoryIcon: "bi bi-cart" },
-  { categoryLabel: "Payment/Transactions", categoryIcon: "bi bi-credit-card" },
-  { categoryLabel: "Tools/Repair", categoryIcon: "bi bi-wrench" },
-  { categoryLabel: "Favorites/Likes", categoryIcon: "bi bi-heart" },
-  { categoryLabel: "Featured/Popular", categoryIcon: "bi bi-star" },
-  { categoryLabel: "Achievements/Awards", categoryIcon: "bi bi-trophy" },
-  { categoryLabel: "Recognition/Certification", categoryIcon: "bi bi-award" },
+  { name: "Organization/Storage", icon: "bi bi-folder" },
+  { name: "Connections/Networking", icon: "bi bi-link-45deg" },
+  { name: "Travel/Location", icon: "bi bi-map" },
+  { name: "Shopping/Commerce", icon: "bi bi-cart" },
+  { name: "Payment/Transactions", icon: "bi bi-credit-card" },
+  { name: "Tools/Repair", icon: "bi bi-wrench" },
+  { name: "Favorites/Likes", icon: "bi bi-heart" },
+  { name: "Featured/Popular", icon: "bi bi-star" },
+  { name: "Achievements/Awards", icon: "bi bi-trophy" },
+  { name: "Recognition/Certification", icon: "bi bi-award" },
 ];
 
 const gigsImages = [
@@ -244,43 +244,37 @@ const randomUser = () => {
     lastName: faker.person.lastName(),
     email: faker.internet.email(),
     password: "Aa123456",
-    role: "user",
     imageUrl: faker.image.avatar(),
     bio: faker.person.bio(),
     gender: faker.helpers.arrayElement(["male", "female", null]),
   };
 };
 
-const randomGig = () => {
+const randomGig = async () => {
+  const categories = await Category.find({});
+  const randCat = faker.helpers.arrayElement(categories);
+  const users = await User.find({});
+  const randUser = faker.helpers.arrayElement(users);
   return {
     title: faker.lorem.words(3),
     description: faker.lorem.paragraph(),
     images: faker.helpers.arrayElements(gigsImages, 3),
     deliveryDays: faker.number.int({ min: 1, max: 30 }),
     price: faker.number.int({ min: 1, max: 1000 }),
-    category: faker.helpers.arrayElement(categories).categoryLabel ,
+    category: randCat._id,
     tags: faker.helpers.arrayElements(
-      categories.map((c) => c.categoryLabel),
+      categories.map((c) => c.name),
       3
     ),
     features: faker.helpers.arrayElements(featuresList, 3),
     coverUrl: faker.helpers.arrayElement(gigsImages),
-    seller: "",
+    seller: randUser._id,
     faqs: faker.helpers.arrayElements(
       faqList.map((f) => ({ question: f.question, answer: f.answer })),
       faker.number.int({ min: 1, max: 5 })
     ),
   } as IGig;
 };
-
-// const randomCategory = () => {
-
-//   return {
-//     name: faker.commerce.department(),
-//     description: faker.commerce.productDescription(),
-//     icon: faker.helpers.arrayElement(categoryIcons),
-//   };
-// };
 
 const seed = async () => {
   const db = await connectDb();
@@ -297,33 +291,27 @@ const seed = async () => {
     console.log("👉 Users seeded successfully");
 
     const randCategories = [];
-    for (let i = 0; i < categories.length; i++) {
+    for (let i = 0; i < categoriesList.length; i++) {
       // categories.push(randomCategory());
       randCategories.push({
-        name: categories[i].categoryLabel,
+        name: categoriesList[i].name,
         description: faker.commerce.productDescription(),
-        icon: categories[i].categoryIcon,
+        icon: categoriesList[i].icon,
       });
     }
 
-    const savedCategories = await Category.insertMany(randCategories);
+    await Category.insertMany(randCategories);
     console.log("👉 Categories seeded successfully");
 
     const randGigs = [];
 
     for (let i = 0; i < 30; i++) {
-      const randUser =
-        savedUsers[Math.floor(Math.random() * savedUsers.length)];
-
-      const randCategory =
-        savedCategories[Math.floor(Math.random() * savedCategories.length)];
-      randGigs.push({
-        ...randomGig(),
-        seller: randUser._id,
-        category: randCategory._id,
-      });
+      const gig = await randomGig();
+      randGigs.push(gig);
     }
     const savedGigs = await Gig.insertMany(randGigs);
+    console.log(randGigs);
+    
     console.log("👉 Gigs seeded successfully");
 
     console.log("👉 Seeded successfully");

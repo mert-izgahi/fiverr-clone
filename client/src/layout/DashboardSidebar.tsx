@@ -1,17 +1,8 @@
 import { NavLink, Stack } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
-import { useAppSelector } from "../redux/store";
-import { useEffect, useMemo } from "react";
 
 function DashboardSidebar() {
   const location = useLocation();
-  const {
-    currentUser: { role },
-  } = useAppSelector((state) => state.auth);
-
-  const isAdmin = useMemo(() => {
-    return role === "admin";
-  }, [role]);
 
   const userLinks = [
     {
@@ -41,38 +32,10 @@ function DashboardSidebar() {
     },
   ];
 
-  const adminLinks = [
-    ...userLinks,
-    {
-      title: "Categories",
-      path: "/dashboard/categories",
-      icon: <i className="bi bi-grid me-2"></i>,
-    },
-    {
-      title: "Users",
-      path: "/dashboard/users",
-      icon: <i className="bi bi-people me-2"></i>,
-    },
-    {
-      title: "Settings",
-      path: "/dashboard/settings",
-      icon: <i className="bi bi-gear me-2"></i>,
-    },
-  ];
-
-  const links = useMemo(() => {
-    if (isAdmin) {
-      return adminLinks;
-    } else {
-      return userLinks;
-    }
-  }, [isAdmin]);
-  console.log(links);
-  
   return (
     <div className="w-100 bg-body h-100">
       <Stack p={"md"}>
-        {links.map((link) => {
+        {userLinks.map((link) => {
           return (
             <NavLink
               key={link.title}

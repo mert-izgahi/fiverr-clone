@@ -8,6 +8,7 @@ export interface IUser {
   imageUrl: string;
   bio?: string;
   gender?: string;
+  notifications?: INotification[];
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -49,7 +50,6 @@ export interface IGig {
   updatedAt?: Date;
 }
 
-
 export interface IOrder {
   _id: string;
   gig: IGig;
@@ -57,6 +57,17 @@ export interface IOrder {
   gigCoverUrl: string;
   price: number;
   buyer: IUser;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface INotification {
+  _id?: string;
+  userId: string;
+  message: string;
+  isRead: boolean;
+  payload: any;
+  type: "NEW_ORDER" | "NEW_REVIEW" | "NEW_MESSAGE";
   createdAt?: Date;
   updatedAt?: Date;
 }

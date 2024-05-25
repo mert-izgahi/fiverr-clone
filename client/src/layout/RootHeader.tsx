@@ -7,6 +7,7 @@ import { useGetCategoriesStateQuery } from "../redux/categories/api";
 import LoadingState from "../components/LoadingState";
 import { useMemo } from "react";
 import SearchForm from "../components/SearchForm";
+import NotificationsMenu from "../components/NotificationsMenu";
 
 function RootHeader() {
   const {
@@ -32,8 +33,6 @@ function RootHeader() {
   if (errorCategories) {
     return <div>Error</div>;
   }
-
-  console.log(location.search);
 
   return (
     <div className="vstack gap-2 bg-body py-2">
@@ -99,7 +98,7 @@ function RootHeader() {
                 </li>
               )}
 
-              {isAuthenticated && role === "user" && (
+              {isAuthenticated && (
                 <li className="nav-item">
                   <NavLink to={"/dashboard"} className="nav-link">
                     Switch to seller
@@ -107,7 +106,9 @@ function RootHeader() {
                 </li>
               )}
 
+              {isAuthenticated && <NotificationsMenu />}
               {isAuthenticated && <UserMenu />}
+
               <li className="nav-item d-none d-lg-block">
                 <ThemeToggler />
               </li>

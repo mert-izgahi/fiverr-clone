@@ -92,6 +92,8 @@ export const getAccount = asyncWrapper(async (req: Request, res: Response) => {
   sendResponse(res, { result: account, status: 200 });
 });
 
+
+
 export const getAllUsers = asyncWrapper(async (req: Request, res: Response) => {
   const search = req.query.search as string;
   const page = parseInt(req.query.page as string) || 1;

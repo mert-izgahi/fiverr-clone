@@ -5,7 +5,6 @@ import configs from "../configs";
 
 export interface IUser extends mongoose.Document {
   _id?: string;
-  role: "admin" | "user";
   email: string | undefined;
   password: string;
   firstName: string;
@@ -21,11 +20,6 @@ export interface IUser extends mongoose.Document {
 
 const userSchema = new mongoose.Schema(
   {
-    role: {
-      type: String,
-      enum: ["admin", "user"],
-      default: "user",
-    },
     email: {
       type: String,
       unique: [true, "Email already exists"],
@@ -60,8 +54,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
-
 userSchema.pre("save", async function (next) {
   const hashed = await bcrypt.hash(this.password!, configs.SALT_ROUNDS);
   this.password = hashed;
@@ -78,6 +70,17 @@ userSchema.methods.generateToken = function () {
     configs.JWT_SECRET as string
   );
 };
+
+userSchema.virtual("notifications", {
+  ref: "Notification",
+  localField: "_id",
+  foreignField: "userId",
+});
+
+userSchema.pre("findOne", function (next) {
+  this.populate("notifications");
+  next();
+});
 
 userSchema.set("toJSON", { virtuals: true });
 userSchema.set("toObject", { virtuals: true });

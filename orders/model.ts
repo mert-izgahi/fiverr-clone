@@ -15,19 +15,30 @@ export interface IOrder extends mongoose.Document {
   updatedAt?: Date;
 }
 
-const orderSchema = new mongoose.Schema({
-  gig: { type: mongoose.Schema.Types.ObjectId, ref: "Gig" },
-  gigTitle: { type: String, required: true },
-  gigCoverUrl: { type: String, required: true },
-  buyer: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  seller: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  price: { type: Number, required: true },
-  paymentIntentId: { type: String, required: true, unique: true },
-  paymentStatus: {
-    type: String,
-    required: true,
-  }
-}, { timestamps: true });
+const orderSchema = new mongoose.Schema(
+  {
+    gig: { type: mongoose.Schema.Types.ObjectId, ref: "Gig" },
+    gigTitle: { type: String, required: true },
+    gigCoverUrl: { type: String, required: true },
+    buyer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    price: { type: Number, required: true },
+    paymentIntentId: { type: String, required: true, unique: true },
+    paymentStatus: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
 orderSchema.index({ gig: 1, paymentIntentId: 1 }, { unique: true });
 

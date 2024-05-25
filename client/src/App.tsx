@@ -13,7 +13,8 @@ import {
   DashboardGigsEditPage,
   DashboardCategoriesListPage,
   DashboardUsersListPage,
-  DashboardUsersEditPage
+  DashboardUsersEditPage,
+  DashboardNotificationsPage,
 } from "./pages/dashboard";
 
 import {
@@ -43,6 +44,7 @@ function App() {
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<DashboardOverviewPage />} />
         <Route path="account" element={<DashboardAccountPage />} />
+        <Route path="notifications" element={<DashboardNotificationsPage />} />
         <Route path="settings" element={<DashboardSettingsPage />} />
         <Route path="conversations">
           <Route index element={<DashboardConversationsListPage />} />

@@ -1,5 +1,5 @@
 import express from "express";
-import { withAuth, forAdmin, withValidate } from "../middlewares";
+import { withAuth, withValidate } from "../middlewares";
 import {
   getGigs,
   getGigsBySellerId,
