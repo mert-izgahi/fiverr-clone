@@ -6,6 +6,7 @@ import UserMenu from "../components/UserMenu";
 import { useGetCategoriesStateQuery } from "../redux/categories/api";
 import LoadingState from "../components/LoadingState";
 import { useMemo } from "react";
+import SearchForm from "../components/SearchForm";
 
 function RootHeader() {
   const {
@@ -35,8 +36,8 @@ function RootHeader() {
   console.log(location.search);
 
   return (
-    <div className="vstack gap-2 bg-body-tertiary py-2">
-      <div className="navbar navbar-expand-lg bg-body-tertiary">
+    <div className="vstack gap-2 bg-body py-2">
+      <div className="navbar navbar-expand-lg bg-body">
         <div className="container">
           <Link to={"/"} className="navbar-brand text-primary fw-bold">
             FiverrClone
@@ -63,8 +64,8 @@ function RootHeader() {
           </div>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <SearchForm className="d-none d-lg-block w-50" />
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0 gap-3 align-items-center">
-              {}
               <li className="nav-item">
                 <NavLink to={"/"} className="nav-link">
                   Home

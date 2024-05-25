@@ -27,7 +27,12 @@ export interface IGig {
   description: string;
   deliveryDays: number;
   price: number;
-  category: string;
+  category: {
+    _id: string;
+    name: string;
+    description: string;
+    icon: string;
+  };
   tags: string[];
   features: string[];
   images: string[];

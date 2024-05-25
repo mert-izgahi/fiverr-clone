@@ -12,6 +12,7 @@ export const createGig = asyncWrapper(async (req: Request, res: Response) => {
 
 export const getGigs = asyncWrapper(async (req: Request, res: Response) => {
   const search = req.query.search as string;
+  const category = req.query.category as string;
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 10;
   const skip = (page - 1) * limit;
@@ -19,7 +20,17 @@ export const getGigs = asyncWrapper(async (req: Request, res: Response) => {
   if (search) {
     queryObj.title = { $regex: search, $options: "i" };
   }
-  const gigs = await Gig.find(queryObj).skip(skip).limit(limit);
+  if(category){
+    queryObj.category = category
+  }
+  const gigs = await Gig.find(queryObj)
+    .populate({
+      path: "seller",
+      select: "firstName lastName imageUrl",
+    })
+    .populate("category")
+    .skip(skip)
+    .limit(limit);
   const total = Math.ceil((await Gig.countDocuments(queryObj)) / limit);
   sendResponse(res, { result: { records: gigs, total }, status: 200 });
 });

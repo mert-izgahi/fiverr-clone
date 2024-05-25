@@ -62,7 +62,7 @@ function GigsTable({
                     </div>
                   </Table.Td>
                   <Table.Td>{gig.title}</Table.Td>
-                  <Table.Td>{gig.category}</Table.Td>
+                  <Table.Td>{gig.category?.name}</Table.Td>
                   <Table.Td>{gig.price}</Table.Td>
                   <Table.Td>{gig.rating}</Table.Td>
                   <Table.Td>{0}</Table.Td>

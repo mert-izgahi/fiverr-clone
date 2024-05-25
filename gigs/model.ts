@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
+import { ICategory } from "../categories/model";
 
 interface IGig extends mongoose.Document {
   title: string;
   description: string;
   deliveryDays: number;
   price: number;
-  category: mongoose.Types.ObjectId;
+  category: mongoose.Types.ObjectId | ICategory;
   tags: string[];
   features: string[];
   images: string[];
@@ -97,6 +98,8 @@ const gigSchema = new mongoose.Schema<IGig>(
   },
   { timestamps: true }
 );
+
+
 
 export const Gig = mongoose.model<IGig>("Gig", gigSchema);
 

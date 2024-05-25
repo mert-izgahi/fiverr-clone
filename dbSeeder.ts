@@ -258,7 +258,7 @@ const randomGig = () => {
     images: faker.helpers.arrayElements(gigsImages, 3),
     deliveryDays: faker.number.int({ min: 1, max: 30 }),
     price: faker.number.int({ min: 1, max: 1000 }),
-    category: faker.helpers.arrayElement(categories).categoryLabel as string,
+    category: faker.helpers.arrayElement(categories).categoryLabel ,
     tags: faker.helpers.arrayElements(
       categories.map((c) => c.categoryLabel),
       3
