@@ -3,6 +3,7 @@ import { useGetGigQuery } from "../../redux/gigs/api";
 import dayjs from "dayjs";
 import { Accordion } from "@mantine/core";
 import LoadingState from "../../components/LoadingState";
+import OrderForm from "../../components/OrderForm";
 
 function GigPage() {
   const { id } = useParams();
@@ -112,7 +113,7 @@ function GigPage() {
         </div>
 
         <div className="col-12 col-md-4 col-lg-4">
-          {/* <OrderForm gig={gig} /> */}
+          <OrderForm gig={gig!} />
         </div>
       </div>
     </div>
