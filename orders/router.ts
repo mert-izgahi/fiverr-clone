@@ -1,6 +1,6 @@
 import express from "express";
-import { withAuth, forAdmin, withValidate } from "../middlewares";
-import { createOrder, getOrders } from "./controllers";
+import { withAuth, withValidate } from "../middlewares";
+import { createOrder, getSellerOrders, getBuyerOrders } from "./controllers";
 import { orderValidationSchema } from "./validators";
 
 const router = express.Router();
@@ -12,6 +12,7 @@ router.post(
   createOrder
 );
 
-router.get("/orders", withAuth, getOrders);
+router.get("/seller-orders", withAuth, getSellerOrders);
+router.get("/buyer-orders", withAuth, getBuyerOrders);
 
 export { router };

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useUpdateNotificationStateMutation } from "../redux/notifications/api";
 import { INotification } from "../types";
 import { Button } from "@mantine/core";
@@ -6,10 +7,16 @@ function NotificationItem({ notification }: { notification: INotification }) {
   const [updateNotificationState, { isLoading, error }] =
     useUpdateNotificationStateMutation();
 
+  const isRead = useMemo(() => {
+    return notification.isRead;
+  }, [notification]);
+
   return (
     <div className="d-flex align-items-center justify-content-between">
-      <p className="mb-0">{notification.message} </p>
-      {notification.isRead ? (
+      <p className="mb-0">
+        {notification.message} - {isRead ? "Read" : "Unread"}{" "}
+      </p>
+      {!isRead ? (
         <Button
           type="button"
           disabled={isLoading}

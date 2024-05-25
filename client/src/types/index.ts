@@ -57,6 +57,8 @@ export interface IOrder {
   gigCoverUrl: string;
   price: number;
   buyer: IUser;
+  seller: IUser;
+  paymentStatus:string;
   createdAt?: Date;
   updatedAt?: Date;
 }

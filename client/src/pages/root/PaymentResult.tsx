@@ -57,7 +57,7 @@ function PaymentResult() {
             console.log("Order created successfully");
 
             setTimeout(() => {
-              navigate("/dashboard/orders");
+              navigate("/orders");
             }, 5000);
           })
           .catch((error) => {

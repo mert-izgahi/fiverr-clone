@@ -1,19 +1,13 @@
-import React, { useMemo } from "react";
-import { useAppSelector } from "../../redux/store";
-import { Button } from "@mantine/core";
 import NotificationItem from "../../components/NotificationItem";
+import { useGetNotificationsQuery } from "../../redux/notifications/api";
 
 function NotificationsPage() {
-  const { currentUser } = useAppSelector((store) => store.auth);
-  const notifications = useMemo(() => {
-    return currentUser.notifications;
-  }, [currentUser]);
-  
+  const { data: notifications, isLoading, error } = useGetNotificationsQuery();
+
   return (
     <div className="container-fluid">
       <div className="row">
         <div className="col-12">
-          <pre>{JSON.stringify(notifications, null, 2)}</pre>
           <div className="card">
             <div className="card-header">
               <h4 className="card-title mb-0">Notifications</h4>
@@ -23,7 +17,7 @@ function NotificationsPage() {
                 {notifications?.map((notification) => {
                   return (
                     <li key={notification._id} className="list-group-item">
-                      <NotificationItem notification={notification}/>
+                      <NotificationItem notification={notification} />
                     </li>
                   );
                 })}

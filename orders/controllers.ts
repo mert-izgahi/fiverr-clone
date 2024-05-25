@@ -36,14 +36,56 @@ export const createOrder = asyncWrapper(async (req: Request, res: Response) => {
       gigId: gig._id,
       seller: gig.seller._id,
     },
-    type:"NEW_ORDER"
+    type: "NEW_ORDER",
   });
 
   sendResponse(res, { result: order, status: 201 });
 });
 
-export const getOrders = asyncWrapper(async (req: Request, res: Response) => {
-  const { currentUserId } = res.locals;
-  const orders = await Order.find({ buyer: currentUserId }).populate("gig");
-  sendResponse(res, { result: orders, status: 200 });
-});
+export const getBuyerOrders = asyncWrapper(
+  async (req: Request, res: Response) => {
+    const { currentUserId } = res.locals;
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const orders = await Order.find({ buyer: currentUserId })
+      .populate("seller gig")
+      .skip(skip)
+      .limit(limit);
+
+    const total = Math.ceil(
+      (await Order.countDocuments({ buyer: currentUserId })) / limit
+    );
+    sendResponse(res, {
+      result: {
+        records: orders,
+        total,
+      },
+      status: 200,
+    });
+  }
+);
+
+export const getSellerOrders = asyncWrapper(
+  async (req: Request, res: Response) => {
+    const { currentUserId } = res.locals;
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const orders = await Order.find({ seller: currentUserId })
+      .populate("buyer gig")
+      .skip(skip)
+      .limit(limit);
+
+    const total = Math.ceil(
+      (await Order.countDocuments({ seller: currentUserId })) / limit
+    );
+
+
+    sendResponse(res, { result: {
+      records: orders,
+      total,
+    }, status: 200 });
+  }
+);

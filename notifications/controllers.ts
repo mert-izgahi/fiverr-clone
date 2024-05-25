@@ -5,9 +5,16 @@ import { Notification } from "./model";
 
 export const markAsRead = asyncWrapper(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const notification = await Notification.findByIdAndUpdate(id, {
-    isRead: true,
-  });
+  const notification = await Notification.findOneAndUpdate(
+    {
+      _id: id,
+      isRead: false,
+    },
+    {
+      isRead: true,
+    }
+  );
+
   sendResponse(res, { result: notification, status: 200 });
 });
 

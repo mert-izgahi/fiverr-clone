@@ -27,6 +27,7 @@ import {
   RootGigPage,
   RootPaymentPage,
   RootPaymentResultPage,
+  RootOrdersPage,
 } from "./pages/root";
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
       <Route path="/" element={<RootLayout />}>
         <Route index element={<RootHomePage />} />
         <Route path="explore" element={<RootExplorePage />} />
+        <Route path="orders" element={<RootOrdersPage />} />
         <Route path="gigs/:id" element={<RootGigPage />} />
         <Route path="gigs/:id/payment" element={<RootPaymentPage />} />
         <Route path="payment-result" element={<RootPaymentResultPage />} />

@@ -99,11 +99,18 @@ function RootHeader() {
               )}
 
               {isAuthenticated && (
-                <li className="nav-item">
-                  <NavLink to={"/dashboard"} className="nav-link">
-                    Switch to seller
-                  </NavLink>
-                </li>
+                <>
+                  <li className="nav-item">
+                    <NavLink to={"/orders"} className="nav-link">
+                      Orders
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink to={"/dashboard"} className="nav-link">
+                      Switch to seller
+                    </NavLink>
+                  </li>
+                </>
               )}
 
               {isAuthenticated && <NotificationsMenu />}
